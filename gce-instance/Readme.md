@@ -2,7 +2,7 @@
 
 This folder contains a simple Terraform configuration that creates an instance of Google Cloud Compute Engine (e2.micro)
 
-## How to run it
+## How to run this configuration
 ### Prerequisites
 0) Create a Google Cloud account
 1) Create a ssh key pair (public and private key. <b>NOTE: while generating your ssh keys, DO NOT insert a passowrd </b>)
