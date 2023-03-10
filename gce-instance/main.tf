@@ -1,5 +1,8 @@
 variable "gce_ssh_user" {}
 variable "gce_ssh_pub_key_file" {}
+variable "project" {}
+variable "region" {}
+variable "zone" {}
 
 terraform {
   required_providers {

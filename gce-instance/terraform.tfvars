@@ -1,2 +1,5 @@
-gce_ssh_user = "YOUR SSH NAME"
-gce_ssh_pub_key_file = "PATH TO .pub SSH KEY"
+gce_ssh_user         = "SSH USERNAME"
+gce_ssh_pub_key_file = "PATH TO .pub KEY"
+project              = "PROJECT'S NAME"
+region               = "REGION'S NAME"
+zone                 = "ZONE'S NAME"
