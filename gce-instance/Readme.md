@@ -7,7 +7,7 @@ This folder contains a simple Terraform configuration that creates an instance o
 ### Prerequisites
 
 0. Create a Google Cloud account
-1. Create a ssh key pair (public and private key. <b>NOTE: while generating your ssh keys, DO NOT insert a passowrd </b>)
+1. Create a ssh key pair (public and private key. <b>NOTE: while generating your ssh keys, DO NOT insert a passowrd</b>)
 2. Google Cloud CLI tools. You need to [login via CLI](https://cloud.google.com/sdk/gcloud/reference/auth/application-default) in order to interact with your account
 3. Terraform installed on your machine
 4. Clone this repo
