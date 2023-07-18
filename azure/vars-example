@@ -1,0 +1,13 @@
+# Rename this file in .tfavrs
+
+resource_group_name                 = ""
+resource_group_location             = ""
+communication_service_name          = ""
+communication_service_data_location = ""
+cosmos_db_name                      = ""
+cosmos_db_offer_type                = ""
+cosmos_db_kind                      = ""
+cosmos_db_mongo_name                = ""
+registry_name                       = ""
+service_bus_namespace_name          = ""
+service_bus_queue_name              = ""
