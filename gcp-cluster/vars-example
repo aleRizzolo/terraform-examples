@@ -1,0 +1,8 @@
+project_id   = ""
+region       = ""
+zone         = ""
+image        = ""
+mode         = ""
+machine-type = ""
+email        = ""
+subnetwork   = ""

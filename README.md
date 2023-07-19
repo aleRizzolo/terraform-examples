@@ -12,8 +12,10 @@ Currently you can find:
 - Azure Registry (ACR)
 - Service Bus (with a queue configuration)
 
-🔜 GCP
+✔️ GCP
+
+- Compute Engine cluster
 
 ## What is the purpose of this repo?
 
-🤝 With this repo I want to help people by providing some configurations that may be useful. It's also a way for myself to improve my Terraform skills
+🤝 With this repo I want to help people by providing some configurations that may be useful. It's also a way for myself to improve (and document) my Terraform skills
