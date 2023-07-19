@@ -32,4 +32,5 @@ variable "email" {
 variable "subnetwork" {
   type        = string
   description = "vm subnetwork"
+  sensitive   = true
 }
