@@ -14,3 +14,7 @@ variable "private_cidrs" {
 variable "internetgw_id" {
   type = string
 }
+
+variable "eip_allocation_id" {
+  type = string
+}

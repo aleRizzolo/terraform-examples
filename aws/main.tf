@@ -17,9 +17,10 @@ module "vpc" {
 }
 
 module "subnets" {
-  source        = "./modules/subnets"
-  vpc_id        = module.vpc.vpc_id
-  public_cidr   = var.public_cidr
-  private_cidrs = var.private_cidrs
-  internetgw_id = module.vpc.igw_id
+  source            = "./modules/subnets"
+  vpc_id            = module.vpc.vpc_id
+  public_cidr       = var.public_cidr
+  private_cidrs     = var.private_cidrs
+  internetgw_id     = module.vpc.igw_id
+  eip_allocation_id = aws_eip.eip.allocation_id
 }

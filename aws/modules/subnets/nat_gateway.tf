@@ -1,5 +1,5 @@
 resource "aws_nat_gateway" "public_natgw" {
-  allocation_id = aws_eip.eip.allocation_id
+  allocation_id = var.eip_allocation_id
   subnet_id     = aws_subnet.public_subnet.id
 
   tags = {
