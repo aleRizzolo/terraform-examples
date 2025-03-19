@@ -18,3 +18,19 @@ variable "public_cidr" {
 variable "private_cidrs" {
   type = map(string)
 }
+
+# ecr
+variable "ecr_name" {
+  type    = string
+  default = "ecr"
+}
+
+variable "image_tag_mutability" {
+  type    = string
+  default = "MUTABLE"
+}
+
+variable "encryption_type" {
+  type    = string
+  default = "AES256"
+}
