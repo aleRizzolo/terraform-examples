@@ -1,10 +1,14 @@
 resource "aws_subnet" "public_subnet" {
-  vpc_id     = var.vpc_id
-  cidr_block = var.public_cidr
+  count                   = length(var.azs)
+  vpc_id                  = var.vpc_id
+  cidr_block              = var.public_cidr[count.index]
+  availability_zone       = var.azs[count.index]
+  map_public_ip_on_launch = true
 
   tags = {
-    Name = "public_subnet"
+    Name = "${var.app_name}-public_subnet"
   }
+
 }
 
 resource "aws_route_table" "igw_route" {
@@ -16,11 +20,12 @@ resource "aws_route_table" "igw_route" {
   }
 
   tags = {
-    Name = "test-route-table"
+    Name = "${var.app_name}-route-table"
   }
 }
 
-resource "aws_route_table_association" "public_subnet_association" {
-  subnet_id      = aws_subnet.public_subnet.id
+resource "aws_route_table_association" "public" {
+  count          = length(var.azs)
+  subnet_id      = aws_subnet.public_subnet[count.index].id
   route_table_id = aws_route_table.igw_route.id
 }

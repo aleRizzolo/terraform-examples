@@ -1,9 +1,10 @@
 resource "aws_nat_gateway" "public_natgw" {
-  allocation_id = var.eip_allocation_id
-  subnet_id     = aws_subnet.public_subnet.id
+  count         = length(var.azs)
+  allocation_id = var.eip_allocation_id[count.index]
+  subnet_id     = aws_subnet.public_subnet[count.index].id
 
   tags = {
-    Name = "public_natgw"
+    Name = "${var.app_name}-public_natgw"
   }
 
   depends_on = [var.internetgw_id]

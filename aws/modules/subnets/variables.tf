@@ -2,9 +2,20 @@ variable "vpc_id" {
   type = string
 }
 
-variable "public_cidr" {
+variable "app_name" {
   type    = string
-  default = "10.0.10.0/16"
+  default = "demo"
+}
+
+variable "public_cidr" {
+  type    = list(string)
+  default = ["10.0.10.0/24", "10.0.11.0/24"]
+}
+
+variable "azs" {
+  description = "Availability zones"
+  type        = list(string)
+  default     = ["eu-central-1a", "eu-central-1b"]
 }
 
 variable "private_cidrs" {
@@ -16,5 +27,5 @@ variable "internetgw_id" {
 }
 
 variable "eip_allocation_id" {
-  type = string
+  type = list(string)
 }

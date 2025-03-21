@@ -22,5 +22,5 @@ module "subnets" {
   public_cidr       = var.public_cidr
   private_cidrs     = var.private_cidrs
   internetgw_id     = module.vpc.igw_id
-  eip_allocation_id = aws_eip.eip.allocation_id
+  eip_allocation_id = [for eip in aws_eip.eip : eip.allocation_id]
 }

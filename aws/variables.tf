@@ -4,6 +4,11 @@ variable "region" {
   description = "Default region for aws provider in main.tf file"
 }
 
+variable "app_name" {
+  type    = string
+  default = "demo"
+}
+
 variable "main_cidr_block" {
   type        = string
   default     = "10.0.0.0/16"
@@ -11,12 +16,18 @@ variable "main_cidr_block" {
 }
 
 variable "public_cidr" {
-  type    = string
-  default = "10.0.10.0/16"
+  type    = list(string)
+  default = ["10.0.10.0/24", "10.0.11.0/24"]
 }
 
 variable "private_cidrs" {
   type = map(string)
+}
+
+variable "azs" {
+  description = "Availability zones"
+  type        = list(string)
+  default     = ["eu-central-1a", "eu-central-1b"]
 }
 
 # ecr
