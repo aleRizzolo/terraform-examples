@@ -1,0 +1,18 @@
+region          = ""
+
+=== Only if you need ===
+access_key      = ""
+secret_key      = ""
+========================
+app_name        = ""
+main_cidr_block = ""
+public_cidr     = ["", ""]
+private_cidrs = {
+  "private_subnetA" = "",
+  "private_subnetB" = ""
+}
+azs                  = ["", ""]
+load_balancer_type   = ""
+ecr_name             = ""
+image_tag_mutability = ""
+encryption_type      = ""

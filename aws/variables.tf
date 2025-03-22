@@ -4,6 +4,14 @@ variable "region" {
   description = "Default region for aws provider in main.tf file"
 }
 
+variable "access_key" {
+  type = string
+}
+
+variable "secret_key" {
+  type = string
+}
+
 variable "app_name" {
   type    = string
   default = "demo"
@@ -28,6 +36,11 @@ variable "azs" {
   description = "Availability zones"
   type        = list(string)
   default     = ["eu-central-1a", "eu-central-1b"]
+}
+
+variable "load_balancer_type" {
+  type    = string
+  default = "application"
 }
 
 # ecr
