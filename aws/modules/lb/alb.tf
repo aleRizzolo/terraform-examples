@@ -1,9 +1,9 @@
 resource "aws_lb" "application_lb" {
-  name               = "${var.app_name}-alb"
+  name               = "alb"
   internal           = false
   load_balancer_type = var.load_balancer_type
-  #  security_groups    = [aws_security_group.lb_sg.id]
-  subnets = var.public_subnets_id
+  security_groups    = var.sg
+  subnets            = var.public_subnets_id
 
   enable_deletion_protection = false
 

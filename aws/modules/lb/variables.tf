@@ -11,3 +11,8 @@ variable "load_balancer_type" {
   type    = string
   default = "application"
 }
+
+variable "sg" {
+  type        = list(string)
+  description = "Sg for alb"
+}

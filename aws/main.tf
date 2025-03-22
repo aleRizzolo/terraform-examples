@@ -32,5 +32,6 @@ module "subnets" {
 module "lb" {
   source            = "./modules/lb"
   app_name          = var.app_name
+  sg                = module.vpc.sg[*].id
   public_subnets_id = module.subnets.public_subnet_ids
 }
