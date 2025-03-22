@@ -19,7 +19,18 @@ variable "azs" {
 }
 
 variable "private_cidrs" {
-  type = map(string)
+  type = list(string)
+  default = [
+    "10.0.32.0/24", # private_ecs_subnet in eu-central-1a
+    "10.0.33.0/24", # private_db_subnet in eu-central-1a
+    "10.0.64.0/24", # private_ecs_subnet in eu-central-1b
+    "10.0.65.0/24"  # private_db_subnet in eu-central-1b
+  ]
+}
+
+variable "private_subnet_names" {
+  type    = list(string)
+  default = ["private_ecs_subnet", "private_db_subnet"]
 }
 
 variable "internetgw_id" {

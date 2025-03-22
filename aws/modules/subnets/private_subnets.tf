@@ -1,13 +1,18 @@
 resource "aws_subnet" "private_subnets" {
-  for_each          = var.private_cidrs
-  vpc_id            = var.vpc_id
-  cidr_block        = each.value
-  availability_zone = each.key == "private_subnetA" ? var.azs[0] : var.azs[1]
+  # This creates 4 subnets: 2 subnet types across 2 AZs
+  count      = length(var.azs) * length(var.private_subnet_names)
+  vpc_id     = var.vpc_id
+  cidr_block = var.private_cidrs[count.index]
+  # Calculate the AZ index (0 or 1) based on the subnet index
+  availability_zone = var.azs[count.index % length(var.azs)]
 
   tags = {
-    Name = "${var.app_name}-${each.key}"
+    # Determine the subnet type name based on the index
+    Name = "${var.app_name}-${var.private_subnet_names[floor(count.index / length(var.azs))]}-${var.azs[count.index % length(var.azs)]}"
   }
 }
+
+# Route tables for each AZ
 resource "aws_route_table" "nat_route" {
   count  = length(var.azs)
   vpc_id = var.vpc_id
@@ -18,11 +23,15 @@ resource "aws_route_table" "nat_route" {
   }
 
   tags = {
-    Name = "${var.app_name}-route-table"
+    Name = "${var.app_name}-rt-private-${var.azs[count.index]}"
   }
 }
 
+# Associate route tables only with private_ecs_subnet in each AZ
 resource "aws_route_table_association" "association_privatesubA" {
-  subnet_id      = aws_subnet.private_subnets["private_subnetA"].id
-  route_table_id = aws_route_table.nat_route[0].id
+  count = length(var.azs)
+
+  # This will pick only the private_ecs_subnet in each AZ
+  subnet_id      = aws_subnet.private_subnets[count.index * length(var.private_subnet_names)].id
+  route_table_id = aws_route_table.nat_route[count.index].id
 }
