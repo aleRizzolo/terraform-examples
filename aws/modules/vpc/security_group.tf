@@ -30,8 +30,3 @@ resource "aws_vpc_security_group_egress_rule" "allow_ip4_ecs" {
     Name = "${var.app_name}-allow_outbound_ecs-sg"
   }
 }
-
-resource "aws_vpc_security_group_vpc_association" "sg_association" {
-  security_group_id = aws_security_group.allow_tls.id
-  vpc_id            = aws_vpc.main.id
-}
