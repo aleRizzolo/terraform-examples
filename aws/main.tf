@@ -35,3 +35,12 @@ module "lb" {
   sg                = module.vpc.sg[*].id
   public_subnets_id = module.subnets.public_subnet_ids
 }
+
+module "db" {
+  source              = "./modules/documentdb"
+  app_name            = var.app_name
+  admin_user_name     = var.admin_user_name
+  admin_user_password = var.admin_user_password
+  auth_type           = var.auth_type
+  subnet_ids          = module.subnets.db_subnet_id
+}
