@@ -21,6 +21,11 @@ module "lb" {
   public_subnets_id = module.subnets.public_subnet_ids
 }
 
+module "ecs" {
+  source   = "./modules/ecs"
+  app_name = var.app_name
+}
+
 module "db" {
   source              = "./modules/documentdb"
   app_name            = var.app_name
