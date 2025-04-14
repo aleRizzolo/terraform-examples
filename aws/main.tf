@@ -22,8 +22,15 @@ module "lb" {
 }
 
 module "ecs" {
-  source   = "./modules/ecs"
-  app_name = var.app_name
+  source               = "./modules/ecs"
+  app_name             = var.app_name
+  family               = var.family
+  container_name       = var.container_name
+  ecs_container_cpu    = var.ecs_container_cpu
+  ecs_container_memory = var.ecs_container_memory
+  container_port       = var.container_port
+  host_port            = var.host_port
+  desidered_count      = var.desidered_count
 }
 
 module "db" {
