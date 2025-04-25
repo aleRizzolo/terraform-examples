@@ -42,13 +42,13 @@ resource "aws_ecs_cluster_capacity_providers" "ecs_cluster_capacity" {
   }
 }*/
 
-resource "aws_ecs_service" "main_app" {
+/*resource "aws_ecs_service" "main_app" {
   name            = "main app"
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.application_task_definition.arn
   desired_count   = var.desidered_count
 
-  /*ordered_placement_strategy {
+  ordered_placement_strategy {
     type  = "binpack"
     field = "cpu"
   }
@@ -62,5 +62,5 @@ resource "aws_ecs_service" "main_app" {
   placement_constraints {
     type       = "memberOf"
     expression = "attribute:ecs.availability-zone in [us-west-2a, us-west-2b]"
-  }*/
-}
+  }
+}*/
