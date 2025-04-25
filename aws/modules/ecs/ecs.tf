@@ -18,7 +18,7 @@ resource "aws_ecs_cluster_capacity_providers" "ecs_cluster_capacity" {
   }
 }
 
-resource "aws_ecs_task_definition" "application_task_definition" {
+/*resource "aws_ecs_task_definition" "application_task_definition" {
   family                   = var.family
   requires_compatibilities = ["FARGATE"]
   container_definitions = jsondecode([
@@ -40,7 +40,7 @@ resource "aws_ecs_task_definition" "application_task_definition" {
   tags = {
     Name = "${var.app_name}-task-definition"
   }
-}
+}*/
 
 resource "aws_ecs_service" "main_app" {
   name            = "main app"
