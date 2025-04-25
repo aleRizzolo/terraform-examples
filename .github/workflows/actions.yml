@@ -7,7 +7,7 @@ on:
       - 'aws/**'
 
 jobs:
-  fmt:
+  validation:
     runs-on: ubuntu-latest
     defaults:
       run:
