@@ -12,7 +12,7 @@ resource "aws_security_group" "alb_sg" {
 # ALB Ingress Rules
 resource "aws_vpc_security_group_ingress_rule" "alb_allow_tls_ipv4" {
   security_group_id = aws_security_group.alb_sg.id
-  cidr_ipv4         = aws_vpc.main.cidr_block
+  cidr_ipv4         = "0.0.0.0/0"
   from_port         = 443
   ip_protocol       = "tcp"
   to_port           = 443
@@ -24,7 +24,7 @@ resource "aws_vpc_security_group_ingress_rule" "alb_allow_tls_ipv4" {
 
 resource "aws_vpc_security_group_ingress_rule" "alb_allow_ipv4" {
   security_group_id = aws_security_group.alb_sg.id
-  cidr_ipv4         = aws_vpc.main.cidr_block
+  cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
   ip_protocol       = "tcp"
   to_port           = 80
@@ -82,4 +82,38 @@ resource "aws_vpc_security_group_ingress_rule" "ecs_from_alb" {
   }
 }
 
-# ToDo: DocumentDB Security Group
+# ECS Egress Rule - allow to DocumentDB only
+resource "aws_vpc_security_group_egress_rule" "ecs_egress_docdb" {
+  security_group_id            = aws_security_group.ecs_to_docdb_sg.id
+  referenced_security_group_id = aws_security_group.docdb_security_group.id
+  from_port                    = 27017
+  to_port                      = 27017
+  ip_protocol                  = "tcp"
+
+  tags = {
+    Name = "${var.app_name}-ecs_to_docdb-sg"
+  }
+}
+
+# DocumentDB Security Group
+resource "aws_security_group" "docdb_security_group" {
+  name        = "docdb-from-ecs"
+  description = "Security group for DocumentDB to allow inbound traffic from ECS only"
+  vpc_id      = aws_vpc.main.id
+
+  tags = {
+    Name = "${var.app_name}-docdb-from-ecs"
+  }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "docdb_from_ecs" {
+  security_group_id            = aws_security_group.docdb_security_group.id
+  referenced_security_group_id = aws_security_group.ecs_to_docdb_sg.id
+  from_port                    = 27017
+  to_port                      = 27017
+  ip_protocol                  = "tcp"
+
+  tags = {
+    Name = "${var.app_name}-docdb-from-ecs"
+  }
+}
