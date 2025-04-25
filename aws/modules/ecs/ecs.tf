@@ -7,7 +7,7 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 }
 
 resource "aws_ecs_cluster_capacity_providers" "ecs_cluster_capacity" {
-  cluster_name = aws_ecs_cluster.example.name
+  cluster_name = aws_ecs_cluster.ecs_cluster.name
 
   capacity_providers = ["FARGATE"]
 
