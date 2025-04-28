@@ -24,7 +24,7 @@ Currently you can find:
 - ALB
 - ECS
 - ECR
-- DocumentDB
+- DocumentDB <br>
 Check README.md for the complete architecture
 
 ## What is the purpose of this repo?
