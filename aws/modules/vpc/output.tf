@@ -11,7 +11,7 @@ output "lb_sg" {
 }
 
 output "ecs_sg" {
-  value = aws_security_group.ecs_from_alb_sg
+  value = aws_security_group.ecs_sg
 }
 
 output "docdb_sg" {
