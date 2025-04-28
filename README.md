@@ -1,6 +1,6 @@
 # terraform-examples
 
-✨ This repo contains some Terraform example made by me<br>
+✨ This repo contains some Terraform examples made by me<br>
 💡 If you want to contribute, open an Issue explaining your ideas<br>
 
 Currently you can find:
