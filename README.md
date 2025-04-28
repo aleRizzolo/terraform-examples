@@ -16,6 +16,17 @@ Currently you can find:
 
 - Compute Engine cluster
 
+✔️ AWS
+
+- API Gateway
+- WAF
+- VPC
+- ALB
+- ECS
+- ECR
+- DocumentDB
+Check README.md for the complete architecture
+
 ## What is the purpose of this repo?
 
 🤝 With this repo I want to help people by providing some configurations that may be useful. It's also a way for myself to improve (and document) my Terraform skills
