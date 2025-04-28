@@ -24,6 +24,7 @@ module "lb" {
 module "ecs" {
   source               = "./modules/ecs"
   lb_arn               = module.lb.lb_arn
+  security_groups      = module.vpc.ecs_sg
   account_id           = var.account_id
   region               = var.region
   app_name             = var.app_name

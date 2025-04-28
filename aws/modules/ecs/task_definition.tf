@@ -31,24 +31,31 @@ resource "aws_ecs_task_definition" "application_task_definition" {
 }
 
 resource "aws_ecs_service" "main_app" {
-  name            = "main app"
-  cluster         = aws_ecs_cluster.ecs_cluster.id
-  task_definition = aws_ecs_task_definition.application_task_definition.arn
-  desired_count   = var.desidered_count
+  name                = "main app"
+  cluster             = aws_ecs_cluster.ecs_cluster.id
+  task_definition     = aws_ecs_task_definition.application_task_definition.arn
+  scheduling_strategy = "REPLICA"
+  desired_count       = var.desired_count
+  force_delete        = false
+  launch_type         = "FARGATE"
+  network_configuration {
+    security_groups  = var.security_groups
+    subnets          = [for cidr in var.private_cidrs : aws_subnet.private_ecs_subnets[cidr].id]
+    assign_public_ip = false
+  }
+
+  lifecycle {
+    ignore_changes = [desired_count]
+  }
 
   ordered_placement_strategy {
-    type  = "binpack"
-    field = "cpu"
+    type  = "spread"
+    field = "memory"
   }
 
   load_balancer {
     target_group_arn = var.lb_arn
-    container_name   = "mongo"
-    container_port   = 8080
+    container_name   = var.container_name
+    container_port   = var.container_port
   }
-
-  /*placement_constraints {
-    type       = "memberOf"
-    expression = "attribute:ecs.availability-zone in [us-west-2a, us-west-2b]"
-  }*/
 }

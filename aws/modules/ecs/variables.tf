@@ -38,7 +38,7 @@ variable "host_port" {
   default = 80
 }
 
-variable "desidered_count" {
+variable "desired_count" {
   type    = number
   default = 1
 }
@@ -63,4 +63,17 @@ variable "ecr_repository_name" {
 variable "lb_arn" {
   type        = string
   description = "Load balancer arn"
+}
+
+variable "private_cidrs" {
+  type = list(string)
+  default = [
+    "10.0.32.0/24", # private_ecs_subnet in eu-central-1a
+    "10.0.64.0/24", # private_ecs_subnet in eu-central-1b
+  ]
+}
+
+variable "security_groups" {
+  type        = set(string)
+  description = "security group from alb to ecs"
 }
