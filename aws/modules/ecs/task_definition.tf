@@ -40,7 +40,7 @@ resource "aws_ecs_service" "main_app" {
   launch_type         = "FARGATE"
   network_configuration {
     security_groups  = var.security_groups
-    subnets          = [for cidr in var.private_cidrs : aws_subnet.private_ecs_subnets[cidr].id]
+    subnets          = var.private_cidrs
     assign_public_ip = false
   }
 

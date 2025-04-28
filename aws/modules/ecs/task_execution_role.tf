@@ -1,4 +1,4 @@
-resource "aws_iam_role" "ecs_role" {
+resource "aws_iam_role" "ecs_task_execution_role" {
   name = "ecs_role"
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -45,6 +45,6 @@ resource "aws_iam_policy" "ecr_pull_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "ecr_pull_attach" {
-  role       = aws_iam_role.ecs_role.name
+  role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = aws_iam_policy.ecr_pull_policy.arn
 }
