@@ -4,6 +4,11 @@ variable "region" {
   description = "Default region for aws provider in main.tf file"
 }
 
+variable "account_id" {
+  type        = string
+  description = "Account id"
+}
+
 variable "access_key" {
   type = string
 }
@@ -135,4 +140,10 @@ variable "image_tag_mutability" {
 variable "encryption_type" {
   type    = string
   default = "AES256"
+}
+
+variable "ecr_repository_name" {
+  type        = string
+  default     = "test"
+  description = "Repository defined in task_execution_role"
 }

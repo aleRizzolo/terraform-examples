@@ -42,7 +42,7 @@ resource "aws_ecs_service" "main_app" {
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.foo.arn
+    target_group_arn = var.lb_arn
     container_name   = "mongo"
     container_port   = 8080
   }

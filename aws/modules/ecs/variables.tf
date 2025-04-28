@@ -51,12 +51,16 @@ variable "region" {
 
 variable "account_id" {
   type        = string
-  default     = "eu-central-1"
-  description = "Default region for aws provider in main.tf file"
+  description = "Account id"
 }
 
 variable "ecr_repository_name" {
   type        = string
-  default     = "eu-central-1"
-  description = "Default region for aws provider in main.tf file"
+  default     = "test"
+  description = "Repository defined in task_execution_role"
+}
+
+variable "lb_arn" {
+  type        = string
+  description = "Load balancer arn"
 }
