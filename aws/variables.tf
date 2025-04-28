@@ -126,11 +126,6 @@ variable "desired_count" {
   default = 1
 }
 
-variable "security_groups" {
-  type        = set(string)
-  description = "security group from alb to ecs"
-}
-
 # ecr
 variable "ecr_name" {
   type    = string

@@ -1,3 +1,4 @@
+# connects to ecr
 resource "aws_iam_role" "ecs_task_execution_role" {
   name = "ecs_role"
   assume_role_policy = jsonencode({
@@ -15,7 +16,7 @@ resource "aws_iam_role" "ecs_task_execution_role" {
   })
 
   tags = {
-    Name = "${var.app_name}-role"
+    Name = "${var.app_name}-execution-role"
   }
 }
 

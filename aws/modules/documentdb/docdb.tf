@@ -7,7 +7,7 @@ resource "aws_docdbelastic_cluster" "db" {
   shard_count             = 1
   backup_retention_period = var.retention_period
   subnet_ids              = var.subnet_ids
-  #vpc_security_group_ids = 
+  vpc_security_group_ids  = var.docdb_security
 
   tags = {
     Name = "${var.app_name}-documentdb"

@@ -44,4 +44,5 @@ module "db" {
   admin_user_password = var.admin_user_password
   auth_type           = var.auth_type
   subnet_ids          = module.subnets.db_subnet_id
+  docdb_security = module.vpc.docdb_sg
 }

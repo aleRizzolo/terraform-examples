@@ -28,3 +28,7 @@ variable "retention_period" {
 variable "subnet_ids" {
   type = list(number)
 }
+
+variable "docdb_security" {
+  type = set(string)
+}

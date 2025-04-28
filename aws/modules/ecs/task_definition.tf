@@ -2,7 +2,8 @@ resource "aws_ecs_task_definition" "application_task_definition" {
   depends_on               = [aws_ecs_cluster.ecs_cluster]
   family                   = var.family
   requires_compatibilities = ["FARGATE"]
-  task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn            = aws_iam_role.ecs_docdb_task_role.arn
   network_mode             = "awsvpc"
   container_definitions = jsonencode([
     {
@@ -32,6 +33,7 @@ resource "aws_ecs_task_definition" "application_task_definition" {
 
 resource "aws_ecs_service" "main_app" {
   name                = "main app"
+  depends_on          = [aws_iam_policy.ecr_pull_policy]
   cluster             = aws_ecs_cluster.ecs_cluster.id
   task_definition     = aws_ecs_task_definition.application_task_definition.arn
   scheduling_strategy = "REPLICA"
