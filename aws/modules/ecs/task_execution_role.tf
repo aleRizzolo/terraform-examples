@@ -1,0 +1,50 @@
+resource "aws_iam_role" "ecs_role" {
+  name = "ecs_role"
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Sid" : "stmt1745856839212",
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "ecs-tasks.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
+
+  tags = {
+    Name = "${var.app_name}-role"
+  }
+}
+
+resource "aws_iam_policy" "ecr_pull_policy" {
+  name        = "ecr_pull_policy"
+  description = "Policy to allow ECS to pull images from ECR"
+
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage",
+          "ecr:BatchCheckLayerAvailability"
+        ],
+        "Resource" : "arn:aws:ecr:${var.region}:${var.account_id}:repository/${var.ecr_repository_name}"
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : "ecr:GetAuthorizationToken",
+        "Resource" : "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ecr_pull_attach" {
+  role       = aws_iam_role.ecs_role.name
+  policy_arn = aws_iam_policy.ecr_pull_policy.arn
+}

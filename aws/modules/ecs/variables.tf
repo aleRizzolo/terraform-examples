@@ -42,3 +42,21 @@ variable "desidered_count" {
   type    = number
   default = 1
 }
+
+variable "region" {
+  type        = string
+  default     = "eu-central-1"
+  description = "Default region for aws provider in main.tf file"
+}
+
+variable "account_id" {
+  type        = string
+  default     = "eu-central-1"
+  description = "Default region for aws provider in main.tf file"
+}
+
+variable "ecr_repository_name" {
+  type        = string
+  default     = "eu-central-1"
+  description = "Default region for aws provider in main.tf file"
+}
