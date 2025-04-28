@@ -121,7 +121,7 @@ variable "host_port" {
   default = 80
 }
 
-variable "desidered_count" {
+variable "desired_count" {
   type    = number
   default = 1
 }

@@ -34,7 +34,7 @@ module "ecs" {
   ecs_container_memory = var.ecs_container_memory
   container_port       = var.container_port
   host_port            = var.host_port
-  desidered_count      = var.desidered_count
+  desired_count        = var.desired_count
 }
 
 module "db" {
