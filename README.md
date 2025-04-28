@@ -1,6 +1,6 @@
 # terraform-examples
 
-✨ This repo contains some Terraform example made by me<br>
+✨ This repo contains some Terraform examples made by me<br>
 💡 If you want to contribute, open an Issue explaining your ideas<br>
 
 Currently you can find:
@@ -15,6 +15,18 @@ Currently you can find:
 ✔️ GCP
 
 - Compute Engine cluster
+
+✔️ AWS
+
+- API Gateway
+- WAF
+- VPC
+- ALB
+- ECS
+- ECR
+- DocumentDB <br>
+
+Check README.md for the complete architecture
 
 ## What is the purpose of this repo?
 
