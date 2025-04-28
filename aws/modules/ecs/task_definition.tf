@@ -2,7 +2,7 @@ resource "aws_ecs_task_definition" "application_task_definition" {
   depends_on               = [aws_ecs_cluster.ecs_cluster]
   family                   = var.family
   requires_compatibilities = ["FARGATE"]
-  task_role_arn            = aws_iam_role.ecs_role.arn
+  task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
   network_mode             = "awsvpc"
   container_definitions = jsonencode([
     {
