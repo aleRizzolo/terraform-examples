@@ -3,7 +3,8 @@ resource "aws_ecs_task_definition" "application_task_definition" {
   family                   = var.family
   requires_compatibilities = ["FARGATE"]
   task_role_arn            = aws_iam_role.ecs_role.arn
-  container_definitions = jsondecode([
+  network_mode             = "awsvpc"
+  container_definitions = jsonencode([
     {
       name      = var.container_name
       image     = var.ecs_image
