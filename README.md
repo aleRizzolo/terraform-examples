@@ -25,6 +25,7 @@ Currently you can find:
 - ECS
 - ECR
 - DocumentDB <br>
+
 Check README.md for the complete architecture
 
 ## What is the purpose of this repo?
