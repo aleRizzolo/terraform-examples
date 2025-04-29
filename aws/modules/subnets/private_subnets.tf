@@ -19,7 +19,7 @@ resource "aws_route_table" "nat_route" {
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.public_natgw[count.index].id
+    nat_gateway_id = aws_nat_gateway.natgw[count.index].id
   }
 
   tags = {
