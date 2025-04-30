@@ -82,10 +82,6 @@ variable "retention_period" {
   default = 1
 }
 
-variable "subnet_ids" {
-  type = list(number)
-}
-
 # ecs
 variable "family" {
   type = string
