@@ -95,6 +95,18 @@ resource "aws_vpc_security_group_egress_rule" "ecs_to_docdb" {
   }
 }
 
+# ECS Egress Rule - To internet (required for on-prem and ecr)
+resource "aws_vpc_security_group_egress_rule" "ecs_to_internet" {
+  security_group_id = aws_security_group.ecs_sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  # All protocols
+  ip_protocol       = "-1"        
+
+  tags = {
+    Name = "${var.app_name}-ecs-to-internet-sg"
+  }
+}
+
 # DocumentDB Ingress Rule - Only from ECS
 resource "aws_vpc_security_group_ingress_rule" "docdb_from_ecs" {
   security_group_id            = aws_security_group.docdb_sg.id

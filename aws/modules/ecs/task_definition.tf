@@ -5,6 +5,8 @@ resource "aws_ecs_task_definition" "application_task_definition" {
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn            = aws_iam_role.ecs_docdb_task_role.arn
   network_mode             = "awsvpc"
+  cpu                      = var.ecs_task_cpu
+  memory                   = var.ecs_task_memory
   container_definitions = jsonencode([
     {
       name      = var.container_name
@@ -31,18 +33,19 @@ resource "aws_ecs_task_definition" "application_task_definition" {
   }
 }
 
-resource "aws_ecs_service" "main_app" {
-  name                = "main app"
-  depends_on          = [aws_iam_policy.ecr_pull_policy]
+resource "aws_ecs_service" "service" {
+  name                = "main_service"
+  depends_on          = [aws_iam_policy.ecr_pull_policy, aws_iam_policy.ecs_lb_policy]
   cluster             = aws_ecs_cluster.ecs_cluster.id
   task_definition     = aws_ecs_task_definition.application_task_definition.arn
   scheduling_strategy = "REPLICA"
   desired_count       = var.desired_count
   force_delete        = false
   launch_type         = "FARGATE"
+
   network_configuration {
     security_groups  = var.security_groups
-    subnets          = var.private_cidrs
+    subnets          = var.private_cidrs_id
     assign_public_ip = false
   }
 
@@ -50,13 +53,8 @@ resource "aws_ecs_service" "main_app" {
     ignore_changes = [desired_count]
   }
 
-  ordered_placement_strategy {
-    type  = "spread"
-    field = "memory"
-  }
-
   load_balancer {
-    target_group_arn = var.lb_arn
+    target_group_arn = var.lb_target_group_arn
     container_name   = var.container_name
     container_port   = var.container_port
   }

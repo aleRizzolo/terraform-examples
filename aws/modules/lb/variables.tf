@@ -16,3 +16,23 @@ variable "sg" {
   type        = list(string)
   description = "Sg for alb"
 }
+
+variable "alb_target_goup_port" {
+  type    = number
+  default = 80
+}
+
+variable "vpc_id" {
+  type    = string
+  default = "vpc"
+}
+
+variable "alb_listner_port" {
+  type    = number
+  default = 80
+}
+
+variable "alb_listner_protocol" {
+  type    = string
+  default = "HTTP"
+}

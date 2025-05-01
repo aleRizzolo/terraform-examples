@@ -15,16 +15,16 @@ variable "public_cidr" {
 variable "azs" {
   description = "Availability zones"
   type        = list(string)
-  default     = ["eu-central-1a", "eu-central-1b"]
+  default     = ["eu-south-1a", "eu-south-1b"]
 }
 
 variable "private_cidrs" {
   type = list(string)
   default = [
-    "10.0.32.0/24", # private_ecs_subnet in eu-central-1a
-    "10.0.33.0/24", # private_db_subnet in eu-central-1a
-    "10.0.64.0/24", # private_ecs_subnet in eu-central-1b
-    "10.0.65.0/24"  # private_db_subnet in eu-central-1b
+    "10.0.32.0/24", # private_ecs_subnet in eu-south-1a
+    "10.0.33.0/24", # private_db_subnet in eu-south-1a
+    "10.0.64.0/24", # private_ecs_subnet in eu-south-1b
+    "10.0.65.0/24"  # private_db_subnet in eu-south-1b
   ]
 }
 
