@@ -153,6 +153,11 @@ variable "ecs_task_memory" {
   description = "ecs task cpu"
 }
 
+variable "docdb_user_password" {
+  type        = string
+  description = "password"
+}
+
 ############################## ecr ##############################
 variable "ecr_name" {
   type    = string
@@ -173,4 +178,84 @@ variable "ecr_repository_name" {
   type        = string
   default     = "test"
   description = "Repository defined in task_execution_role"
+}
+
+############################## cache ##############################
+variable "minimum_cache_usage_limits" {
+  type = number
+}
+
+variable "maximum_cache_usage_limits" {
+  type = number
+}
+
+variable "daily_snapshot_time" {
+  type = string
+}
+
+variable "description" {
+  type = string
+}
+
+variable "snapshot_retention_limit" {
+  type = number
+}
+
+variable "minimum_ecpu_seconds" {
+  type    = number
+  default = 1000
+}
+
+variable "maximum_ecpu_seconds" {
+  type    = number
+  default = 5000
+}
+
+############################## cloudfront ##############################
+variable "origin_protocol_policy" {
+  type    = string
+  default = "http"
+}
+
+variable "custom_header_name" {
+  type = string
+}
+
+variable "custom_header_value" {
+  type = string
+}
+
+variable "cache_policy_name" {
+  type    = string
+  default = "cache-policy"
+}
+
+variable "min_ttl" {
+  type = number
+}
+
+variable "max_ttl" {
+  type = number
+}
+
+variable "allowed_methods" {
+  type = list(string)
+}
+
+variable "viewer_protocol_policy" {
+  type = string
+}
+
+variable "locations" {
+  description = "List of countries where our app is allowed"
+  type        = list(string)
+}
+
+variable "price_class" {
+  type = string
+}
+
+variable "is_cloudfront_staging" {
+  type    = bool
+  default = true
 }

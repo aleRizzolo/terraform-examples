@@ -28,17 +28,33 @@ resource "aws_iam_policy" "ecr_pull_policy" {
     "Version" : "2012-10-17",
     "Statement" : [
       {
+        "Sid" : "VisualEditor0",
         "Effect" : "Allow",
         "Action" : [
+          "ecr:GetRegistryPolicy",
+          "ecr:DescribeImageScanFindings",
+          "ecr:GetLifecyclePolicyPreview",
           "ecr:GetDownloadUrlForLayer",
+          "ecr:DescribeRegistry",
+          "ecr:DescribePullThroughCacheRules",
+          "ecr:DescribeImageReplicationStatus",
+          "ecr:DescribeRepositoryCreationTemplates",
+          "ecr:GetAuthorizationToken",
+          "ecr:ListTagsForResource",
+          "ecr:ListImages",
+          "ecr:BatchGetRepositoryScanningConfiguration",
+          "ecr:GetRegistryScanningConfiguration",
+          "ecr:ValidatePullThroughCacheRule",
+          "ecr:GetAccountSetting",
           "ecr:BatchGetImage",
-          "ecr:BatchCheckLayerAvailability"
+          "ecr:DescribeImages",
+          "ecr:*",
+          "ecr:DescribeRepositories",
+          "ecr:GetImageCopyStatus",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:GetRepositoryPolicy",
+          "ecr:GetLifecyclePolicy"
         ],
-        "Resource" : "arn:aws:ecr:${var.region}:${var.account_id}:repository/${var.ecr_repository_name}"
-      },
-      {
-        "Effect" : "Allow",
-        "Action" : "ecr:GetAuthorizationToken",
         "Resource" : "*"
       }
     ]

@@ -83,3 +83,12 @@ variable "ecs_task_memory" {
   type        = number
   description = "ecs task cpu"
 }
+
+variable "docdb_user_password" {
+  type        = string
+  description = "password"
+}
+
+variable "docdb_uri" {
+  type = string
+}

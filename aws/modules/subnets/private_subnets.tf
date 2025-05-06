@@ -1,5 +1,5 @@
 resource "aws_subnet" "private_subnets" {
-  # This creates 4 subnets: 2 subnet types across 2 AZs
+  # This creates 6 subnets: 3 subnet types across 2 AZs (private subnets needed: ecs, docdb, cache)
   count      = length(var.azs) * length(var.private_subnet_names)
   vpc_id     = var.vpc_id
   cidr_block = var.private_cidrs[count.index]

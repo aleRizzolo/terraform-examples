@@ -5,14 +5,15 @@ module "vpc" {
 }
 
 module "subnets" {
-  source            = "./modules/subnets"
-  app_name          = var.app_name
-  azs               = ["eu-south-1a", "eu-south-1b"]
-  vpc_id            = module.vpc.vpc_id
-  public_cidr       = var.public_cidr
-  private_cidrs     = var.private_cidrs
-  internetgw_id     = module.vpc.igw_id
-  eip_allocation_id = [for eip in aws_eip.eip : eip.allocation_id]
+  source               = "./modules/subnets"
+  app_name             = var.app_name
+  azs                  = ["eu-south-1a", "eu-south-1b"]
+  vpc_id               = module.vpc.vpc_id
+  private_subnet_names = var.private_subnet_names
+  public_cidr          = var.public_cidr
+  private_cidrs        = var.private_cidrs
+  internetgw_id        = module.vpc.igw_id
+  eip_allocation_id    = [for eip in aws_eip.eip : eip.allocation_id]
 }
 
 module "db" {
@@ -36,6 +37,17 @@ module "lb" {
   alb_listner_protocol = var.alb_listner_protocol
 }
 
+module "cache" {
+  source                     = "./modules/cache"
+  app_name                   = var.app_name
+  minimum_cache_usage_limits = var.minimum_cache_usage_limits
+  maximum_cache_usage_limits = var.maximum_cache_usage_limits
+  daily_snapshot_time        = var.daily_snapshot_time
+  description                = var.description
+  snapshot_retention_limit   = var.snapshot_retention_limit
+  cache_subnet_ids           = module.subnets.cache_subnet_ids
+}
+
 module "ecs" {
   source               = "./modules/ecs"
   depends_on           = [module.db]
@@ -55,4 +67,30 @@ module "ecs" {
   desired_count        = var.desired_count
   private_cidrs_id     = module.subnets.private_cidrs_id
   lb_target_group_arn  = module.lb.target_group_arn
+  docdb_user_password  = var.docdb_user_password
+  docdb_uri            = module.db.db_connection_string
+}
+
+module "waf" {
+  source   = "./modules/waf"
+  app_name = var.app_name
+  lb_arn   = module.lb.lb_arn
+}
+
+module "cloudfront" {
+  source                 = "./modules/cloudfront"
+  app_name               = var.app_name
+  origin_protocol_policy = var.origin_protocol_policy
+  alb_dns_name           = module.lb.alb_dns_name
+  custom_header_name     = var.custom_header_name
+  custom_header_value    = var.custom_header_value
+  origin_id              = module.lb.lb_arn
+  cache_policy_name      = var.cache_policy_name
+  min_ttl                = var.min_ttl
+  max_ttl                = var.max_ttl
+  allowed_methods        = var.allowed_methods
+  viewer_protocol_policy = var.viewer_protocol_policy
+  locations              = var.locations
+  price_class            = var.price_class
+  is_cloudfront_staging  = var.is_cloudfront_staging
 }

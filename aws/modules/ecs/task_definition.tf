@@ -1,3 +1,7 @@
+locals {
+  docb_uri = "mongodb://skinnerDB:${var.docdb_user_password}@skinner-docdb-724772066899.eu-south-1.docdb-elastic.amazonaws.com:27017"
+}
+
 resource "aws_ecs_task_definition" "application_task_definition" {
   depends_on               = [aws_ecs_cluster.ecs_cluster]
   family                   = var.family
@@ -9,10 +13,13 @@ resource "aws_ecs_task_definition" "application_task_definition" {
   memory                   = var.ecs_task_memory
   container_definitions = jsonencode([
     {
-      name      = var.container_name
-      image     = var.ecs_image
-      cpu       = var.ecs_container_cpu
-      memory    = var.ecs_container_memory
+      name   = var.container_name
+      image  = var.ecs_image
+      cpu    = var.ecs_container_cpu
+      memory = var.ecs_container_memory
+      environment = [
+        { "name" : "MONGO_URI", "value" : local.docb_uri }
+      ]
       essential = true
       portMappings = [
         {
@@ -35,7 +42,6 @@ resource "aws_ecs_task_definition" "application_task_definition" {
 
 resource "aws_ecs_service" "service" {
   name                = "main_service"
-  depends_on          = [aws_iam_policy.ecr_pull_policy, aws_iam_policy.ecs_lb_policy]
   cluster             = aws_ecs_cluster.ecs_cluster.id
   task_definition     = aws_ecs_task_definition.application_task_definition.arn
   scheduling_strategy = "REPLICA"

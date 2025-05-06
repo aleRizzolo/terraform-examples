@@ -16,3 +16,12 @@ output "db_subnet_id" {
     if floor(i / length(var.azs)) == 1 # Specifically targeting "private_db_subnet" at index 1
   ]
 }
+
+output "cache_subnet_ids" {
+  description = "List of IDs of private ElastiCache subnets"
+  value = [
+    for i, subnet in aws_subnet.private_subnets :
+    subnet.id
+    if floor(i / length(var.azs)) == 2 # Specifically targeting "private_cache_subnet" at index 2
+  ]
+}

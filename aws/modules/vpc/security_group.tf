@@ -100,7 +100,7 @@ resource "aws_vpc_security_group_egress_rule" "ecs_to_internet" {
   security_group_id = aws_security_group.ecs_sg.id
   cidr_ipv4         = "0.0.0.0/0"
   # All protocols
-  ip_protocol       = "-1"        
+  ip_protocol = "-1"
 
   tags = {
     Name = "${var.app_name}-ecs-to-internet-sg"
