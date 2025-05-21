@@ -92,3 +92,16 @@ variable "docdb_user_password" {
 variable "docdb_uri" {
   type = string
 }
+
+variable "cache_endpoint" {
+  type = list(object({
+    address = string
+    port    = number
+  }))
+  default = [
+    {
+      address = "redis://redis"
+      port    = "6379"
+    }
+  ]
+}

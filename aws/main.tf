@@ -65,10 +65,11 @@ module "ecs" {
   container_port       = var.container_port
   host_port            = var.host_port
   desired_count        = var.desired_count
-  private_cidrs_id     = module.subnets.private_cidrs_id
+  private_cidrs_id     = module.subnets.ecs_subnet_ids
   lb_target_group_arn  = module.lb.target_group_arn
   docdb_user_password  = var.docdb_user_password
   docdb_uri            = module.db.db_connection_string
+  cache_endpoint       = module.cache.cache_endpoint
 }
 
 module "waf" {
@@ -77,7 +78,7 @@ module "waf" {
   lb_arn   = module.lb.lb_arn
 }
 
-module "cloudfront" {
+/*module "cloudfront" {
   source                 = "./modules/cloudfront"
   app_name               = var.app_name
   origin_protocol_policy = var.origin_protocol_policy
@@ -93,4 +94,4 @@ module "cloudfront" {
   locations              = var.locations
   price_class            = var.price_class
   is_cloudfront_staging  = var.is_cloudfront_staging
-}
+}*/

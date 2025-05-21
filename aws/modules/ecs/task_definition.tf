@@ -1,5 +1,6 @@
 locals {
-  docb_uri = "mongodb://skinnerDB:${var.docdb_user_password}@skinner-docdb-724772066899.eu-south-1.docdb-elastic.amazonaws.com:27017"
+  docb_uri       = "mongodb://skinnerDB:${var.docdb_user_password}@skinner-docdb-724772066899.eu-south-1.docdb-elastic.amazonaws.com:27017"
+  cache_endpoint = "redis://${var.cache_endpoint[0].address}:${var.cache_endpoint[0].port}"
 }
 
 resource "aws_ecs_task_definition" "application_task_definition" {
@@ -7,7 +8,7 @@ resource "aws_ecs_task_definition" "application_task_definition" {
   family                   = var.family
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-  task_role_arn            = aws_iam_role.ecs_docdb_task_role.arn
+  task_role_arn            = aws_iam_role.ecs_task_role.arn
   network_mode             = "awsvpc"
   cpu                      = var.ecs_task_cpu
   memory                   = var.ecs_task_memory
@@ -18,7 +19,8 @@ resource "aws_ecs_task_definition" "application_task_definition" {
       cpu    = var.ecs_container_cpu
       memory = var.ecs_container_memory
       environment = [
-        { "name" : "MONGO_URI", "value" : local.docb_uri }
+        { "name" : "MONGO_URI", "value" : local.docb_uri },
+        { "name" : "REDIS_URL", "value" : local.cache_endpoint }
       ]
       essential = true
       portMappings = [

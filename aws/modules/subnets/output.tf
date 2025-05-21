@@ -3,11 +3,6 @@ output "public_subnet_ids" {
   value       = aws_subnet.public_subnet[*].id
 }
 
-output "private_cidrs_id" {
-  description = "Private subnet ids"
-  value       = aws_subnet.private_subnets[*].id
-}
-
 output "db_subnet_id" {
   description = "List of IDs of private DB subnets"
   value = [
@@ -23,5 +18,14 @@ output "cache_subnet_ids" {
     for i, subnet in aws_subnet.private_subnets :
     subnet.id
     if floor(i / length(var.azs)) == 2 # Specifically targeting "private_cache_subnet" at index 2
+  ]
+}
+
+output "ecs_subnet_ids" {
+  description = "IDs of private ECS subnets only"
+  value = [
+    for i, subnet in aws_subnet.private_subnets :
+    subnet.id
+    if floor(i / length(var.azs)) == 0 # Specifically targeting "private_ecs_subnet" at index 0
   ]
 }

@@ -22,39 +22,45 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 
 resource "aws_iam_policy" "ecr_pull_policy" {
   name        = "ecr_pull_policy"
-  description = "Policy to allow ECS to pull images from ECR"
+  description = "Policy to allow ECS to pull images from private ECR and public registry"
 
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
       {
-        "Sid" : "VisualEditor0",
+        "Sid" : "PrivateECRRepositoryAccess",
         "Effect" : "Allow",
         "Action" : [
-          "ecr:GetRegistryPolicy",
-          "ecr:DescribeImageScanFindings",
-          "ecr:GetLifecyclePolicyPreview",
-          "ecr:GetDownloadUrlForLayer",
-          "ecr:DescribeRegistry",
-          "ecr:DescribePullThroughCacheRules",
-          "ecr:DescribeImageReplicationStatus",
-          "ecr:DescribeRepositoryCreationTemplates",
-          "ecr:GetAuthorizationToken",
-          "ecr:ListTagsForResource",
-          "ecr:ListImages",
-          "ecr:BatchGetRepositoryScanningConfiguration",
-          "ecr:GetRegistryScanningConfiguration",
-          "ecr:ValidatePullThroughCacheRule",
-          "ecr:GetAccountSetting",
           "ecr:BatchGetImage",
           "ecr:DescribeImages",
-          "ecr:*",
-          "ecr:DescribeRepositories",
-          "ecr:GetImageCopyStatus",
-          "ecr:BatchCheckLayerAvailability",
-          "ecr:GetRepositoryPolicy",
-          "ecr:GetLifecyclePolicy"
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:ListImages",
+          "ecr:ListTagsForResource"
         ],
+        "Resource" : "arn:aws:ecr:*:*:repository/*"
+      },
+      {
+        "Sid" : "GetAuthorizationToken",
+        "Effect" : "Allow",
+        "Action" : "ecr:GetAuthorizationToken",
+        "Resource" : "*"
+      },
+      {
+        "Sid" : "PublicECRRepositoryAccess",
+        "Effect" : "Allow",
+        "Action" : [
+          "ecr-public:DescribeImages",
+          "ecr-public:GetAuthorizationToken",
+          "ecr-public:BatchGetImage",
+          "ecr-public:GetDownloadUrlForLayer",
+          "ecr-public:ListImages"
+        ],
+        "Resource" : "*"
+      },
+      {
+        "Sid" : "PublicECRServiceAccess",
+        "Effect" : "Allow",
+        "Action" : "sts:GetServiceBearerToken",
         "Resource" : "*"
       }
     ]
