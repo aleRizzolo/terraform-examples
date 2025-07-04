@@ -2,7 +2,7 @@ locals {
   origin_id = var.origin_id
 }
 
-resource "aws_cloudfront_distribution" "skinner_alb_distribution" {
+resource "aws_cloudfront_distribution" "alb_distribution" {
   enabled     = true
   price_class = var.price_class
   staging     = var.is_cloudfront_staging

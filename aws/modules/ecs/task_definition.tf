@@ -1,5 +1,5 @@
 locals {
-  docb_uri       = "mongodb://skinnerDB:${var.docdb_user_password}@skinner-docdb-724772066899.eu-south-1.docdb-elastic.amazonaws.com:27017"
+  docb_uri       = "mongodb://db:${var.docdb_user_password}@db-docdb-724772066899.eu-south-1.docdb-elastic.amazonaws.com:27017"
   cache_endpoint = "redis://${var.cache_endpoint[0].address}:${var.cache_endpoint[0].port}"
 }
 

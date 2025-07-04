@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket = "skinner-remote-backend"
+    bucket = ""
     key    = "state"
     region = "eu-south-1"
     profile = "terraform"
