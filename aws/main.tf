@@ -78,7 +78,7 @@ module "waf" {
   lb_arn   = module.lb.lb_arn
 }
 
-/*module "cloudfront" {
+/* module "cloudfront" {
   source                 = "./modules/cloudfront"
   app_name               = var.app_name
   origin_protocol_policy = var.origin_protocol_policy
@@ -94,4 +94,4 @@ module "waf" {
   locations              = var.locations
   price_class            = var.price_class
   is_cloudfront_staging  = var.is_cloudfront_staging
-}*/
+} */

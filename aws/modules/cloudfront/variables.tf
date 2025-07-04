@@ -5,7 +5,7 @@ variable "app_name" {
 
 variable "origin_protocol_policy" {
   type    = string
-  default = "http"
+  default = "http-only"
 }
 
 variable "alb_dns_name" {

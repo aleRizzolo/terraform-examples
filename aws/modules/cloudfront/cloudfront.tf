@@ -12,9 +12,9 @@ resource "aws_cloudfront_distribution" "skinner_alb_distribution" {
     origin_id   = local.origin_id
     custom_origin_config {
       http_port              = 80
-      https_port             = 443
+      https_port             = 80
       origin_protocol_policy = var.origin_protocol_policy
-      origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2"]
+      origin_ssl_protocols   = ["TLSv1.2"]
     }
     custom_header {
       name  = var.custom_header_name
@@ -37,7 +37,9 @@ resource "aws_cloudfront_distribution" "skinner_alb_distribution" {
     }
   }
 
-  viewer_certificate {}
+  viewer_certificate {
+    cloudfront_default_certificate = true
+  }
 
   tags = {
     Name = "${var.app_name}-cloudfront"
