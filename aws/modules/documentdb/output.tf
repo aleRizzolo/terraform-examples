@@ -1,3 +1,3 @@
 output "db_connection_string" {
-  value = aws_docdbelastic_cluster.db.endpoint
+  value = aws_docdb_cluster.db.endpoint
 }

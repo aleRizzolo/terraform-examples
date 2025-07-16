@@ -36,3 +36,7 @@ variable "maximum_ecpu_seconds" {
   type    = number
   default = 5000
 }
+
+variable "sg_ids" {
+  type = set(string)
+}

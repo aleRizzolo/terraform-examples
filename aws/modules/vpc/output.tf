@@ -17,3 +17,7 @@ output "ecs_sg" {
 output "docdb_sg" {
   value = aws_security_group.docdb_sg.id
 }
+
+output "elasticache_sg" {
+  value = aws_security_group.cache_sg.id
+}

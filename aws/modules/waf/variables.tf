@@ -3,6 +3,6 @@ variable "app_name" {
   default = "demo"
 }
 
-variable "lb_arn" {
+variable "cloudfront_arn" {
   type = string
 }

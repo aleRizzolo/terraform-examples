@@ -25,10 +25,26 @@ variable "retention_period" {
   default = 1
 }
 
+variable "docdb_security" {
+  type = set(string)
+}
+
+variable "azs" {
+  type = list(string)
+}
+
 variable "subnet_ids" {
   type = list(string)
 }
 
-variable "docdb_security" {
-  type = set(string)
+variable "preferred_backup_window" {
+  type = string
+}
+
+variable "preferred_maintenance_window" {
+  type = string
+}
+
+variable "instance_class" {
+  type = string
 }

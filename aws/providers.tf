@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket = ""
-    key    = "state"
-    region = "eu-south-1"
-    profile = "terraform"
+    bucket       = "skinner-remote-backend"
+    key          = "state"
+    region       = "eu-south-1"
+    profile      = "terraform"
     use_lockfile = true
   }
 

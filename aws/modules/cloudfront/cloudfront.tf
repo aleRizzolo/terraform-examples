@@ -1,8 +1,9 @@
 locals {
+  # LB id for univocity
   origin_id = var.origin_id
 }
 
-resource "aws_cloudfront_distribution" "alb_distribution" {
+resource "aws_cloudfront_distribution" "cloudfront_skinner_distribution" {
   enabled     = true
   price_class = var.price_class
   staging     = var.is_cloudfront_staging
@@ -10,15 +11,8 @@ resource "aws_cloudfront_distribution" "alb_distribution" {
   origin {
     domain_name = var.alb_dns_name
     origin_id   = local.origin_id
-    custom_origin_config {
-      http_port              = 80
-      https_port             = 80
-      origin_protocol_policy = var.origin_protocol_policy
-      origin_ssl_protocols   = ["TLSv1.2"]
-    }
-    custom_header {
-      name  = var.custom_header_name
-      value = var.custom_header_value
+    vpc_origin_config {
+      vpc_origin_id = aws_cloudfront_vpc_origin.cloudfront_alb.id
     }
   }
 

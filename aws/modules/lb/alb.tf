@@ -1,9 +1,9 @@
 resource "aws_lb" "application_lb" {
   name                             = "alb"
-  internal                         = false
+  internal                         = true
   load_balancer_type               = var.load_balancer_type
   security_groups                  = var.sg
-  subnets                          = var.public_subnets_id
+  subnets                          = var.private_alb_subnets_id
   enable_cross_zone_load_balancing = true
 
   enable_deletion_protection = false

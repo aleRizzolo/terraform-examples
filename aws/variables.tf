@@ -13,14 +13,6 @@ variable "account_id" {
   description = "Account id"
 }
 
-variable "access_key" {
-  type = string
-}
-
-variable "secret_key" {
-  type = string
-}
-
 variable "app_name" {
   type    = string
   default = "demo"
@@ -58,6 +50,10 @@ variable "azs" {
   default     = ["eu-central-1a", "eu-central-1b"]
 }
 
+variable "lb_subnet_cidr" {
+  type = list(string)
+}
+
 ############################## lb ##############################
 variable "load_balancer_type" {
   type    = string
@@ -93,24 +89,26 @@ variable "admin_user_password" {
   sensitive = true
 }
 
-variable "auth_type" {
-  type    = string
-  default = "PLAIN_TEXT"
-}
-
 variable "retention_period" {
   type    = number
   default = 1
 }
 
-############################## ecs ##############################
-variable "family" {
+variable "preferred_backup_window" {
   type = string
 }
 
-variable "container_name" {
-  type    = string
-  default = "container"
+variable "preferred_maintenance_window" {
+  type = string
+}
+
+variable "instance_class" {
+  type = string
+}
+
+############################## ecs ##############################
+variable "family" {
+  type = string
 }
 
 variable "ecs_image" {
@@ -158,26 +156,118 @@ variable "docdb_user_password" {
   description = "password"
 }
 
-############################## ecr ##############################
-variable "ecr_name" {
-  type    = string
-  default = "ecr"
+variable "test_patient_email" {
+  type = string
 }
 
-variable "image_tag_mutability" {
-  type    = string
-  default = "MUTABLE"
+variable "test_medic_email" {
+  type = string
 }
 
-variable "encryption_type" {
-  type    = string
-  default = "AES256"
+variable "test_admin_email" {
+  type = string
 }
 
-variable "ecr_repository_name" {
-  type        = string
-  default     = "test"
-  description = "Repository defined in task_execution_role"
+variable "test_user_password" {
+  type = string
+}
+
+variable "secret_key" {
+  type = string
+}
+
+variable "base_url" {
+  type = string
+}
+
+variable "shap_url" {
+  type = string
+}
+
+variable "mail_username" {
+  type = string
+}
+
+variable "mail_password" {
+  type = string
+}
+
+variable "mail_from" {
+  type = string
+}
+
+variable "mail_port" {
+  type = string
+}
+
+variable "mail_server" {
+  type = string
+}
+
+variable "mail_from_name" {
+  type = string
+}
+
+variable "mail_start_tls" {
+  type = string
+}
+
+variable "mail_ssl_tls" {
+  type = string
+}
+
+variable "use_credentials" {
+  type = string
+}
+
+variable "validate_cert" {
+  type = string
+}
+
+variable "firebase_credentials" {
+  type = string
+}
+
+variable "google_client_id" {
+  type = string
+}
+
+variable "facebook_secret" {
+  type = string
+}
+
+variable "facebook_app_id" {
+  type = string
+}
+
+variable "rp_id" {
+  type = string
+}
+
+variable "rp_name" {
+  type = string
+}
+
+variable "rp_origin" {
+  type = string
+}
+
+variable "log_driver" {
+  type = string
+}
+
+variable "container_names" {
+  type = list(string)
+}
+
+############################## logs ##############################
+
+variable "logs_retention" {
+  type = number
+}
+
+variable "cloudwatch_log_group" {
+  type = string
 }
 
 ############################## cache ##############################
@@ -215,14 +305,6 @@ variable "maximum_ecpu_seconds" {
 variable "origin_protocol_policy" {
   type    = string
   default = "http"
-}
-
-variable "custom_header_name" {
-  type = string
-}
-
-variable "custom_header_value" {
-  type = string
 }
 
 variable "cache_policy_name" {

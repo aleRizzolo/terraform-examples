@@ -4,19 +4,14 @@ variable "app_name" {
 }
 
 variable "origin_protocol_policy" {
-  type    = string
-  default = "http-only"
+  type = string
 }
 
 variable "alb_dns_name" {
   type = string
 }
 
-variable "custom_header_name" {
-  type = string
-}
-
-variable "custom_header_value" {
+variable "alb_arn" {
   type = string
 }
 

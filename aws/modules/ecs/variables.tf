@@ -105,3 +105,132 @@ variable "cache_endpoint" {
     }
   ]
 }
+
+variable "cache_reader_endpoint" {
+  type = list(object({
+    address = string
+    port    = number
+  }))
+  default = [
+    {
+      address = "redis://redis"
+      port    = "6380"
+    }
+  ]
+}
+
+variable "test_patient_email" {
+  type = string
+}
+
+variable "test_medic_email" {
+  type = string
+}
+
+variable "test_admin_email" {
+  type = string
+}
+
+variable "test_user_password" {
+  type = string
+}
+
+variable "secret_key" {
+  type = string
+}
+
+variable "base_url" {
+  type = string
+}
+
+variable "shap_url" {
+  type = string
+}
+
+variable "mail_username" {
+  type = string
+}
+
+variable "mail_password" {
+  type = string
+}
+
+variable "mail_from" {
+  type = string
+}
+
+variable "mail_port" {
+  type = string
+}
+
+variable "mail_server" {
+  type = string
+}
+
+variable "mail_from_name" {
+  type = string
+}
+
+variable "mail_start_tls" {
+  type = string
+}
+
+variable "mail_ssl_tls" {
+  type = string
+}
+
+variable "use_credentials" {
+  type = string
+}
+
+variable "validate_cert" {
+  type = string
+}
+
+variable "firebase_credentials" {
+  type = string
+}
+
+variable "google_client_id" {
+  type = string
+}
+
+variable "facebook_secret" {
+  type = string
+}
+
+variable "facebook_app_id" {
+  type = string
+}
+
+variable "rp_id" {
+  type = string
+}
+
+variable "rp_name" {
+  type = string
+}
+
+variable "rp_origin" {
+  type = string
+}
+
+variable "cloudfront_origin" {
+  type = string
+}
+
+variable "cloudwatch_log_group" {
+  type = string
+}
+
+variable "container_names" {
+  type = list(string)
+}
+
+variable "log_group_name" {
+  type = string
+}
+
+variable "log_arn" {
+  type = string
+}

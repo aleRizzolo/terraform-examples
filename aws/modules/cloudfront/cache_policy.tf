@@ -10,17 +10,11 @@ resource "aws_cloudfront_cache_policy" "cache_policy" {
     }
 
     headers_config {
-      header_behavior = "whitelist"
-      headers {
-        items = [var.custom_header_name]
-      }
+      header_behavior = "none"
     }
 
     query_strings_config {
-      query_string_behavior = "none"
+      query_string_behavior = "all"
     }
-
-    enable_accept_encoding_brotli = true
-    enable_accept_encoding_gzip   = true
   }
 }

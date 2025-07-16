@@ -3,7 +3,7 @@ variable "app_name" {
   default = "demo"
 }
 
-variable "public_subnets_id" {
+variable "private_alb_subnets_id" {
   type = list(string)
 }
 

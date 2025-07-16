@@ -29,3 +29,7 @@ output "ecs_subnet_ids" {
     if floor(i / length(var.azs)) == 0 # Specifically targeting "private_ecs_subnet" at index 0
   ]
 }
+
+output "private_alb_subnets_id" {
+  value = aws_subnet.lb_subnet[*].id
+}

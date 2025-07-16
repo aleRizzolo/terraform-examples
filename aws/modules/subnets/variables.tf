@@ -18,6 +18,10 @@ variable "azs" {
   default     = ["eu-south-1a", "eu-south-1b"]
 }
 
+variable "lb_subnet_cidr" {
+  type = list(string)
+}
+
 variable "private_cidrs" {
   type = list(string)
   default = [
