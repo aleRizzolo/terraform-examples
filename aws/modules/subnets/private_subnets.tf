@@ -1,8 +1,9 @@
 resource "aws_subnet" "private_subnets" {
   # This creates 6 subnets: 3 subnet types across 2 AZs (private subnets needed: ecs, docdb, cache)
-  count      = length(var.azs) * length(var.private_subnet_names)
-  vpc_id     = var.vpc_id
-  cidr_block = var.private_cidrs[count.index]
+  count                   = length(var.azs) * length(var.private_subnet_names)
+  vpc_id                  = var.vpc_id
+  cidr_block              = var.private_cidrs[count.index]
+  map_public_ip_on_launch = false
   # Calculate the AZ index (0 or 1) based on the subnet index
   availability_zone = var.azs[count.index % length(var.azs)]
   tags = {

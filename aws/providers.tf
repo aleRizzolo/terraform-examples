@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket       = "skinner-remote-backend"
+    bucket       = "my-remote-backend"
     key          = "state"
     region       = "eu-south-1"
     profile      = "terraform"
@@ -17,5 +17,13 @@ terraform {
 
 provider "aws" {
   region  = var.region
+  profile = var.profile_name
+}
+
+// we need this in order to create waf for cloudfront
+// waf2 for cloudfront should be in us-east-1
+provider "aws" {
+  region  = "us-east-1"
+  alias   = "us_east"
   profile = var.profile_name
 }

@@ -76,6 +76,14 @@ variable "alb_listner_protocol" {
   default = "HTTP"
 }
 
+variable "health_interval" {
+  type = number
+}
+
+variable "health_port" {
+  type = number
+}
+
 ############################## doc db ##############################
 variable "admin_user_name" {
   type      = string
@@ -106,6 +114,22 @@ variable "instance_class" {
   type = string
 }
 
+variable "skip_final_snapshot" {
+  type = bool
+}
+
+variable "serveless_max_capacity" {
+  type = number
+}
+
+variable "serveless_min_capacity" {
+  type = number
+}
+
+variable "key_alias" {
+  type = string
+}
+
 ############################## ecs ##############################
 variable "family" {
   type = string
@@ -127,11 +151,6 @@ variable "ecs_container_memory" {
 }
 
 variable "container_port" {
-  type    = number
-  default = 80
-}
-
-variable "host_port" {
   type    = number
   default = 80
 }
@@ -173,10 +192,6 @@ variable "test_user_password" {
 }
 
 variable "secret_key" {
-  type = string
-}
-
-variable "base_url" {
   type = string
 }
 
@@ -256,8 +271,22 @@ variable "log_driver" {
   type = string
 }
 
-variable "container_names" {
-  type = list(string)
+variable "cert_name" {
+  type = string
+}
+
+variable "health_check_grace_period_seconds" {
+  type = number
+}
+
+variable "autoscaling_max_capacity" {
+  type    = number
+  default = 10
+}
+
+variable "autoscaling_min_capacity" {
+  type    = number
+  default = 1
 }
 
 ############################## logs ##############################
@@ -267,6 +296,14 @@ variable "logs_retention" {
 }
 
 variable "cloudwatch_log_group" {
+  type = string
+}
+
+variable "aws_deploy" {
+  type = string
+}
+
+variable "log_environment" {
   type = string
 }
 

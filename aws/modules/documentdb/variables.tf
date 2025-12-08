@@ -48,3 +48,19 @@ variable "preferred_maintenance_window" {
 variable "instance_class" {
   type = string
 }
+
+variable "skip_final_snapshot" {
+  type = bool
+}
+
+variable "serveless_max_capacity" {
+  type = number
+}
+
+variable "serveless_min_capacity" {
+  type = number
+}
+
+variable "key_alias" {
+  type = string
+}

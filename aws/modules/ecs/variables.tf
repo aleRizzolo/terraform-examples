@@ -33,11 +33,6 @@ variable "container_port" {
   default = 80
 }
 
-variable "host_port" {
-  type    = number
-  default = 80
-}
-
 variable "desired_count" {
   type    = number
   default = 1
@@ -139,10 +134,6 @@ variable "secret_key" {
   type = string
 }
 
-variable "base_url" {
-  type = string
-}
-
 variable "shap_url" {
   type = string
 }
@@ -223,14 +214,32 @@ variable "cloudwatch_log_group" {
   type = string
 }
 
-variable "container_names" {
-  type = list(string)
-}
-
 variable "log_group_name" {
   type = string
 }
 
 variable "log_arn" {
   type = string
+}
+
+variable "aws_deploy" {
+  type = string
+}
+
+variable "cert_name" {
+  type = string
+}
+
+variable "health_check_grace_period_seconds" {
+  type = number
+}
+
+variable "autoscaling_max_capacity" {
+  type    = number
+  default = 10
+}
+
+variable "autoscaling_min_capacity" {
+  type    = number
+  default = 1
 }

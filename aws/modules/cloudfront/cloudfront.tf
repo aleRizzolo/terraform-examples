@@ -3,10 +3,12 @@ locals {
   origin_id = var.origin_id
 }
 
-resource "aws_cloudfront_distribution" "cloudfront_skinner_distribution" {
+resource "aws_cloudfront_distribution" "cloudfront_my-app_distribution" {
   enabled     = true
   price_class = var.price_class
   staging     = var.is_cloudfront_staging
+
+  web_acl_id = var.acl_arn
 
   origin {
     domain_name = var.alb_dns_name

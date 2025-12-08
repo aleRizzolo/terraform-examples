@@ -21,6 +21,15 @@ resource "aws_lb_target_group" "ecs_target_group" {
   vpc_id                            = var.vpc_id
   load_balancing_cross_zone_enabled = "use_load_balancer_configuration"
 
+  health_check {
+    enabled  = true
+    interval = var.health_interval
+    protocol = "HTTP"
+    matcher  = "200"
+    port     = var.health_port
+    path     = "/health"
+  }
+
   tags = {
     Name = "${var.app_name}-ecs-target"
   }

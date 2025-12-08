@@ -36,3 +36,11 @@ variable "alb_listner_protocol" {
   type    = string
   default = "HTTP"
 }
+
+variable "health_interval" {
+  type = number
+}
+
+variable "health_port" {
+  type = number
+}

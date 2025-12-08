@@ -52,3 +52,7 @@ variable "is_cloudfront_staging" {
   type    = bool
   default = true
 }
+
+variable "acl_arn" {
+  type = string
+}

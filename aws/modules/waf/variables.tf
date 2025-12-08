@@ -3,6 +3,7 @@ variable "app_name" {
   default = "demo"
 }
 
-variable "cloudfront_arn" {
-  type = string
+variable "waf_region" {
+  type    = string
+  default = "us-east-1"
 }

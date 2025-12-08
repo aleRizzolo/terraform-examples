@@ -1,2 +1,3 @@
-# AWS
-AWS infrastructure for my friend's startup
+# skinner-infra
+AWS infra example with Terraform
+

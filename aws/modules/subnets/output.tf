@@ -8,7 +8,7 @@ output "db_subnet_id" {
   value = [
     for i, subnet in aws_subnet.private_subnets :
     subnet.id
-    if floor(i / length(var.azs)) == 1 # Specifically targeting "private_db_subnet" at index 1
+    if floor(i / length(var.azs)) == 1 # specifically targeting "private_db_subnet" at index 1
   ]
 }
 
@@ -17,7 +17,7 @@ output "cache_subnet_ids" {
   value = [
     for i, subnet in aws_subnet.private_subnets :
     subnet.id
-    if floor(i / length(var.azs)) == 2 # Specifically targeting "private_cache_subnet" at index 2
+    if floor(i / length(var.azs)) == 2 # specifically targeting "private_cache_subnet" at index 2
   ]
 }
 
@@ -26,10 +26,15 @@ output "ecs_subnet_ids" {
   value = [
     for i, subnet in aws_subnet.private_subnets :
     subnet.id
-    if floor(i / length(var.azs)) == 0 # Specifically targeting "private_ecs_subnet" at index 0
+    if floor(i / length(var.azs)) == 0 # specifically targeting "private_ecs_subnet" at index 0
   ]
 }
 
 output "private_alb_subnets_id" {
   value = aws_subnet.lb_subnet[*].id
+}
+
+output "private_route_table_ids" {
+  description = "Private route table IDs for VPC endpoints"
+  value       = aws_route_table.nat_route[*].id
 }

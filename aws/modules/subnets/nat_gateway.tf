@@ -6,6 +6,4 @@ resource "aws_nat_gateway" "natgw" {
   tags = {
     Name = "${var.app_name}-public_natgw"
   }
-
-  depends_on = [var.internetgw_id]
 }
