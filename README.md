@@ -18,12 +18,13 @@ Currently you can find:
 
 ✔️ AWS
 
-- API Gateway
+- CloudFront
 - WAF
 - VPC
 - ALB
 - ECS
 - ECR
+- ElastiCache (Redis)
 - DocumentDB <br>
 
 Check README.md for the complete architecture
