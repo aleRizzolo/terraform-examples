@@ -5,6 +5,6 @@ resource "aws_subnet" "lb_subnet" {
   availability_zone = var.azs[count.index]
 
   tags = {
-    Name = "${var.app_name}-alb-subnet"
+    Name = "${var.app_name}-lb-subnet"
   }
 }

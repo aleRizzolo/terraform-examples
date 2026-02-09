@@ -8,3 +8,9 @@ variable "app_name" {
   type    = string
   default = "demo"
 }
+
+variable "azs" {
+  description = "Availability zones"
+  type        = list(string)
+  default     = ["eu-central-1a", "eu-central-1b"]
+}

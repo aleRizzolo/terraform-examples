@@ -2,6 +2,7 @@ module "vpc" {
   source          = "./modules/vpc"
   app_name        = var.app_name
   main_cidr_block = var.main_cidr_block
+  azs             = var.azs
 }
 
 module "subnets" {
@@ -14,37 +15,25 @@ module "subnets" {
   private_cidrs        = var.private_cidrs
   lb_subnet_cidr       = var.lb_subnet_cidr
   internetgw_id        = module.vpc.igw_id
-  eip_allocation_id    = [for eip in aws_eip.eip : eip.allocation_id]
+  eip_allocation_id    = module.vpc.eip_allocation_id
 }
 
-module "db" {
-  source                       = "./modules/documentdb"
-  app_name                     = var.app_name
-  admin_user_name              = var.admin_user_name
-  admin_user_password          = var.admin_user_password
-  subnet_ids                   = module.subnets.db_subnet_id
-  azs                          = var.azs
-  docdb_security               = [module.vpc.docdb_sg]
-  preferred_backup_window      = var.preferred_backup_window
-  preferred_maintenance_window = var.preferred_maintenance_window
-  instance_class               = var.instance_class
-  skip_final_snapshot          = var.skip_final_snapshot
-  serveless_max_capacity       = var.serveless_max_capacity
-  serveless_min_capacity       = var.serveless_min_capacity
-  key_alias                    = var.key_alias
-}
+/*module "db" {
+  source = "./modules/dynamodb"
+  app_name = var.app_name
+  billing_mode = var.billing_mode
+}*/
 
 module "lb" {
-  source                 = "./modules/lb"
-  app_name               = var.app_name
-  sg                     = [module.vpc.lb_sg]
-  alb_target_goup_port   = var.alb_target_goup_port
-  private_alb_subnets_id = module.subnets.private_alb_subnets_id
-  vpc_id                 = module.vpc.vpc_id
-  alb_listner_port       = var.alb_listner_port
-  alb_listner_protocol   = var.alb_listner_protocol
-  health_interval        = var.health_interval
-  health_port            = var.health_port
+  source                = "./modules/lb"
+  app_name              = var.app_name
+  sg                    = [module.vpc.lb_sg]
+  lb_target_group_port  = var.lb_target_group_port
+  private_lb_subnets_id = module.subnets.private_lb_subnets_id
+  vpc_id                = module.vpc.vpc_id
+  lb_listener_port      = var.lb_listener_port
+  health_interval       = var.health_interval
+  health_port           = var.health_port
 }
 
 module "cache" {
@@ -57,37 +46,36 @@ module "cache" {
   snapshot_retention_limit   = var.snapshot_retention_limit
   cache_subnet_ids           = module.subnets.cache_subnet_ids
   sg_ids                     = [module.vpc.elasticache_sg]
+  maximum_ecpu_seconds       = var.maximum_ecpu_seconds
+  minimum_ecpu_seconds       = var.minimum_ecpu_seconds
 }
 
-module "waf" {
-  source   = "./modules/waf"
-  app_name = var.app_name
-  // waf for cloudfront needs to be created in us-east-1
-  providers = {
-    aws = aws.us_east
-  }
+/*module "waf" {
+  source                = "./modules/waf"
+  app_name              = var.app_name
+  locations             = var.locations
+  api_gateway_stage_arn = module.api_gateway.stage_arn
+}*/
+
+module "api_gateway" {
+  source       = "./modules/api_gateway"
+  app_name     = var.app_name
+  nlb_arn      = module.lb.lb_arn
+  nlb_dns_name = module.lb.nlb_dns_name
 }
 
-module "cloudfront" {
-  source                 = "./modules/cloudfront"
-  app_name               = var.app_name
-  origin_protocol_policy = var.origin_protocol_policy
-  alb_dns_name           = module.lb.alb_dns_name
-  origin_id              = module.lb.lb_arn
-  min_ttl                = var.min_ttl
-  max_ttl                = var.max_ttl
-  allowed_methods        = var.allowed_methods
-  viewer_protocol_policy = var.viewer_protocol_policy
-  locations              = var.locations
-  price_class            = var.price_class
-  alb_arn                = module.lb.lb_arn
-  is_cloudfront_staging  = var.is_cloudfront_staging
-  acl_arn                = module.waf.acl_arn
+module "vpc_endpoint" {
+  source             = "./modules/vpc_endpoint"
+  app_name           = var.app_name
+  vpc_id             = module.vpc.vpc_id
+  region             = var.region
+  subnet_ids         = module.subnets.ecs_subnet_ids
+  route_table_ids    = module.subnets.private_route_table_ids
+  security_group_ids = []
 }
 
 module "ecs" {
   source                            = "./modules/ecs"
-  depends_on                        = [module.db]
   security_groups                   = [module.vpc.ecs_sg]
   ecs_image                         = var.ecs_image
   account_id                        = var.account_id
@@ -104,8 +92,6 @@ module "ecs" {
   desired_count                     = var.desired_count
   private_cidrs_id                  = module.subnets.ecs_subnet_ids
   lb_target_group_arn               = module.lb.target_group_arn
-  docdb_user_password               = var.docdb_user_password
-  docdb_uri                         = module.db.db_connection_string
   cache_endpoint                    = module.cache.cache_endpoint
   cache_reader_endpoint             = module.cache.cache_reader_endpoint
   test_patient_email                = var.test_patient_email
@@ -131,7 +117,7 @@ module "ecs" {
   rp_id                             = var.rp_id
   rp_name                           = var.rp_name
   rp_origin                         = var.rp_origin
-  cloudfront_origin                 = module.cloudfront.cf_domain_name
+  origin                            = module.api_gateway.api_endpoint_domain
   log_arn                           = aws_cloudwatch_log_group.ecs_logs.arn
   aws_deploy                        = var.aws_deploy
   cert_name                         = var.cert_name

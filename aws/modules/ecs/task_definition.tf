@@ -1,11 +1,3 @@
-locals {
-  # in the code, READER_ENDPOINT substitutes REDIS_URL (cache endpoint)
-  # if in the future this is fixed, then change back to CERT_* strings
-  cache_endpoint  = "rediss://${var.cache_endpoint[0].address}:${var.cache_endpoint[0].port}/0?ssl_cert_reqs=none"
-  reader_endpoint = "rediss://${var.cache_endpoint[0].address}:${var.cache_endpoint[0].port}/0?ssl_cert_reqs=none"
-  cors_origin     = var.cloudfront_origin
-}
-
 resource "aws_ecs_task_definition" "main_task_definition" {
   depends_on               = [aws_ecs_cluster.ecs_cluster]
   family                   = "${var.family}-main"
@@ -26,6 +18,40 @@ resource "aws_ecs_task_definition" "main_task_definition" {
       image  = var.ecs_image
       cpu    = var.ecs_container_cpu
       memory = var.ecs_container_memory
+      environment = [
+        { "name" : "BACKEND_CORS_ORIGINS", "value" : "https://${local.cors_origin}" },
+        { "name" : "REDIS_URL", "value" : local.cache_endpoint },
+        # we could put local.cache_endpoint and delete local.reader_endpoint 
+        # READER_ENDPOINT is just a misunderstaning in variable name choice in the code
+        { "name" : "READER_ENDPOINT", "value" : local.reader_endpoint },
+        { "name" : "PATIENTTESTUSEREMAIL", "value" : var.test_patient_email },
+        { "name" : "MEDICTESTUSEREMAIL", "value" : var.test_medic_email },
+        { "name" : "ADMINTESTUSEREMAIL", "value" : var.test_admin_email },
+        { "name" : "TESTUSERPASSWORD", "value" : var.test_user_password },
+        { "name" : "PROJECT_NAME", "value" : var.app_name },
+        { "name" : "SECRET_KEY", "value" : var.secret_key },
+        { "name" : "BASE_URL", "value" : "https://${local.cors_origin}" },
+        { "name" : "SHAP_SERVICE_URL", "value" : var.shap_url },
+        { "name" : "MAIL_USERNAME", "value" : var.mail_username },
+        { "name" : "MAIL_PASSWORD", "value" : var.mail_password },
+        { "name" : "MAIL_FROM", "value" : var.mail_from },
+        { "name" : "MAIL_PORT", "value" : var.mail_port },
+        { "name" : "MAIL_SERVER", "value" : var.mail_server },
+        { "name" : "MAIL_FROM_NAME", "value" : var.mail_from_name },
+        { "name" : "MAIL_STARTTLS", "value" : var.mail_start_tls },
+        { "name" : "MAIL_SSL_TLS", "value" : var.mail_ssl_tls },
+        { "name" : "USE_CREDENTIALS", "value" : var.use_credentials },
+        { "name" : "VALIDATE_CERTS", "value" : var.validate_cert },
+        { "name" : "FIREBASE_CREDENTIALS_PATH", "value" : var.firebase_credentials },
+        { "name" : "GOOGLE_CLIENT_ID", "value" : var.google_client_id },
+        { "name" : "FACEBOOK_APP_SECRET", "value" : var.facebook_secret },
+        { "name" : "FACEBOOK_APP_ID", "value" : var.facebook_app_id },
+        { "name" : "RP_ID", "value" : var.rp_id },
+        { "name" : "RP_NAME", "value" : var.rp_name },
+        { "name" : "RP_ORIGIN", "value" : var.rp_origin },
+        { "name" : "AWS_DEPLOY", "value" : var.aws_deploy },
+        { "name" : "DB_CERT", "value" : var.cert_name }
+      ]
       essential = true
       logConfiguration = {
         logDriver = "awslogs"
@@ -70,7 +96,8 @@ resource "aws_ecs_task_definition" "celery_task_definition" {
 
   container_definitions = jsonencode([
     {
-      name = "celery"
+      name             = "celery"
+      workingDirectory = "/app/backend"
       command = [
         "/app/backend/.venv/bin/python",
         "-m",
@@ -86,6 +113,38 @@ resource "aws_ecs_task_definition" "celery_task_definition" {
       image  = var.ecs_image
       cpu    = var.ecs_container_cpu
       memory = var.ecs_container_memory
+      environment = [
+        { "name" : "BACKEND_CORS_ORIGINS", "value" : "https://${local.cors_origin}" },
+        { "name" : "REDIS_URL", "value" : local.cache_endpoint },
+        { "name" : "READER_ENDPOINT", "value" : local.reader_endpoint },
+        { "name" : "PATIENTTESTUSEREMAIL", "value" : var.test_patient_email },
+        { "name" : "MEDICTESTUSEREMAIL", "value" : var.test_medic_email },
+        { "name" : "ADMINTESTUSEREMAIL", "value" : var.test_admin_email },
+        { "name" : "TESTUSERPASSWORD", "value" : var.test_user_password },
+        { "name" : "PROJECT_NAME", "value" : var.app_name },
+        { "name" : "SECRET_KEY", "value" : var.secret_key },
+        { "name" : "BASE_URL", "value" : "https://${local.cors_origin}" },
+        { "name" : "SHAP_SERVICE_URL", "value" : var.shap_url },
+        { "name" : "MAIL_USERNAME", "value" : var.mail_username },
+        { "name" : "MAIL_PASSWORD", "value" : var.mail_password },
+        { "name" : "MAIL_FROM", "value" : var.mail_from },
+        { "name" : "MAIL_PORT", "value" : var.mail_port },
+        { "name" : "MAIL_SERVER", "value" : var.mail_server },
+        { "name" : "MAIL_FROM_NAME", "value" : var.mail_from_name },
+        { "name" : "MAIL_STARTTLS", "value" : var.mail_start_tls },
+        { "name" : "MAIL_SSL_TLS", "value" : var.mail_ssl_tls },
+        { "name" : "USE_CREDENTIALS", "value" : var.use_credentials },
+        { "name" : "VALIDATE_CERTS", "value" : var.validate_cert },
+        { "name" : "FIREBASE_CREDENTIALS_PATH", "value" : var.firebase_credentials },
+        { "name" : "GOOGLE_CLIENT_ID", "value" : var.google_client_id },
+        { "name" : "FACEBOOK_APP_SECRET", "value" : var.facebook_secret },
+        { "name" : "FACEBOOK_APP_ID", "value" : var.facebook_app_id },
+        { "name" : "RP_ID", "value" : var.rp_id },
+        { "name" : "RP_NAME", "value" : var.rp_name },
+        { "name" : "RP_ORIGIN", "value" : var.rp_origin },
+        { "name" : "AWS_DEPLOY", "value" : var.aws_deploy },
+        { "name" : "DB_CERT", "value" : var.cert_name }
+      ]
       essential = true
       logConfiguration = {
         logDriver = "awslogs"

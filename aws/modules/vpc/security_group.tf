@@ -1,11 +1,11 @@
-# ALB Security Group
-resource "aws_security_group" "alb_sg" {
-  name        = "alb-security-group"
-  description = "Security group for ALB"
+# NLB Security Group
+resource "aws_security_group" "nlb_sg" {
+  name        = "nlb-security-group"
+  description = "Security group for NLB"
   vpc_id      = aws_vpc.main.id
 
   tags = {
-    Name = "${var.app_name}-alb-sg"
+    Name = "${var.app_name}-nlb-sg"
   }
 }
 
@@ -20,17 +20,6 @@ resource "aws_security_group" "ecs_sg" {
   }
 }
 
-# DocumentDB Security Group
-resource "aws_security_group" "docdb_sg" {
-  name        = "docdb-security-group"
-  description = "Security group for DocumentDB to allow inbound traffic from ECS only"
-  vpc_id      = aws_vpc.main.id
-
-  tags = {
-    Name = "${var.app_name}-docdb-sg"
-  }
-}
-
 # ElastiCache Securiy Group
 resource "aws_security_group" "cache_sg" {
   name        = "elasticache-security-group"
@@ -42,42 +31,45 @@ resource "aws_security_group" "cache_sg" {
   }
 }
 
-# Since we're using vpc origins
-# no need to allow from cf public ips
-resource "aws_vpc_security_group_ingress_rule" "alb_from_vpc_origin" {
-  security_group_id = aws_security_group.alb_sg.id
-  cidr_ipv4         = aws_vpc.main.cidr_block
+# NLB Ingress Rule - Allow from anywhere on port 80
+# REST API VPC Link traffic arrives via AWS-managed PrivateLink (outside VPC CIDR).
+# The NLB is internal and only reachable via the VPC Link, so this is safe
+# We don't know AWS managed CIDR
+resource "aws_vpc_security_group_ingress_rule" "nlb_from_vpc" {
+  security_group_id = aws_security_group.nlb_sg.id
+  cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
   to_port           = 80
   ip_protocol       = "tcp"
+
   tags = {
-    Name = "${var.app_name}-alb-from-vpc-origin"
+    Name = "${var.app_name}-nlb-ingress"
   }
 }
 
-# ALB Egress Rule to ECS
-resource "aws_vpc_security_group_egress_rule" "alb_to_ecs" {
-  security_group_id            = aws_security_group.alb_sg.id
+# NLB Egress Rule to ECS
+resource "aws_vpc_security_group_egress_rule" "nlb_to_ecs" {
+  security_group_id            = aws_security_group.nlb_sg.id
   referenced_security_group_id = aws_security_group.ecs_sg.id
   from_port                    = 8000
   to_port                      = 8000
   ip_protocol                  = "tcp"
 
   tags = {
-    Name = "${var.app_name}-alb-to-ecs-sg"
+    Name = "${var.app_name}-nlb-to-ecs-sg"
   }
 }
 
-# ECS Ingress Rule - Only from ALB
-resource "aws_vpc_security_group_ingress_rule" "ecs_from_alb" {
+# ECS Ingress Rule - Only from NLB
+resource "aws_vpc_security_group_ingress_rule" "ecs_from_nlb" {
   security_group_id            = aws_security_group.ecs_sg.id
-  referenced_security_group_id = aws_security_group.alb_sg.id
+  referenced_security_group_id = aws_security_group.nlb_sg.id
   from_port                    = 8000
   to_port                      = 8000
   ip_protocol                  = "tcp"
 
   tags = {
-    Name = "${var.app_name}-ecs-from-alb-sg"
+    Name = "${var.app_name}-ecs-from-nlb-sg"
   }
 }
 
@@ -87,20 +79,8 @@ resource "aws_vpc_security_group_egress_rule" "ecs_allow_all_outbound" {
   ip_protocol       = "-1"
 }
 
-# DocumentDB Ingress Rule - Only from ECS
-resource "aws_vpc_security_group_ingress_rule" "docdb_from_ecs" {
-  security_group_id            = aws_security_group.docdb_sg.id
-  referenced_security_group_id = aws_security_group.ecs_sg.id
-  from_port                    = 27017
-  to_port                      = 27017
-  ip_protocol                  = "tcp"
-
-  tags = {
-    Name = "${var.app_name}-docdb-from-ecs-sg"
-  }
-}
-
 # ElastiCache Ingress Rule - Only from ECS
+# aws uses port 6380 as alias. no need sg to port 6380
 resource "aws_vpc_security_group_ingress_rule" "cache_from_ecs" {
   security_group_id            = aws_security_group.cache_sg.id
   referenced_security_group_id = aws_security_group.ecs_sg.id

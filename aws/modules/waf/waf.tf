@@ -1,7 +1,6 @@
-resource "aws_wafv2_web_acl" "cloudfront_waf" {
-  name     = "${var.app_name}-waf"
-  scope    = "CLOUDFRONT"
-  provider = aws
+resource "aws_wafv2_web_acl" "api_gw_waf" {
+  name  = "${var.app_name}-waf"
+  scope = "REGIONAL"
 
   default_action {
     allow {}
@@ -14,8 +13,33 @@ resource "aws_wafv2_web_acl" "cloudfront_waf" {
   }
 
   rule {
-    name     = "RateLimit"
+    name     = "GeoBlock"
     priority = 0
+
+    action {
+      block {}
+    }
+
+    statement {
+      not_statement {
+        statement {
+          geo_match_statement {
+            country_codes = var.locations
+          }
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "GeoBlock"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "RateLimit"
+    priority = 1
 
     action {
       block {}
@@ -37,7 +61,7 @@ resource "aws_wafv2_web_acl" "cloudfront_waf" {
 
   rule {
     name     = "AWS-AWSManagedRulesAdminProtectionRuleSet"
-    priority = 1
+    priority = 2
 
     override_action {
       none {}
@@ -53,25 +77,6 @@ resource "aws_wafv2_web_acl" "cloudfront_waf" {
     visibility_config {
       cloudwatch_metrics_enabled = true
       metric_name                = "AWS-AWSManagedRulesAdminProtectionRuleSet"
-      sampled_requests_enabled   = true
-    }
-  }
-
-  rule {
-    name     = "AWS-AWSManagedRulesSQLiRuleSet"
-    priority = 2
-    override_action {
-      none {}
-    }
-    statement {
-      managed_rule_group_statement {
-        name        = "AWSManagedRulesSQLiRuleSet"
-        vendor_name = "AWS"
-      }
-    }
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "AWSManagedRulesSQLiRuleSet"
       sampled_requests_enabled   = true
     }
   }
@@ -167,4 +172,10 @@ resource "aws_wafv2_web_acl" "cloudfront_waf" {
   tags = {
     Name = "${var.app_name}-waf"
   }
+}
+
+# WAF association requires the stage ARN, not the API ARN
+resource "aws_wafv2_web_acl_association" "api_gw" {
+  resource_arn = var.api_gateway_stage_arn
+  web_acl_arn  = aws_wafv2_web_acl.api_gw_waf.arn
 }

@@ -3,21 +3,16 @@ variable "app_name" {
   default = "demo"
 }
 
-variable "private_alb_subnets_id" {
+variable "private_lb_subnets_id" {
   type = list(string)
-}
-
-variable "load_balancer_type" {
-  type    = string
-  default = "application"
 }
 
 variable "sg" {
   type        = list(string)
-  description = "Sg for alb"
+  description = "Sg for lb"
 }
 
-variable "alb_target_goup_port" {
+variable "lb_target_group_port" {
   type    = number
   default = 80
 }
@@ -27,14 +22,9 @@ variable "vpc_id" {
   default = "vpc"
 }
 
-variable "alb_listner_port" {
+variable "lb_listener_port" {
   type    = number
   default = 80
-}
-
-variable "alb_listner_protocol" {
-  type    = string
-  default = "HTTP"
 }
 
 variable "health_interval" {

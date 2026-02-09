@@ -33,15 +33,15 @@ variable "private_cidrs" {
   type = list(string)
   default = [
     "10.0.32.0/24", # private_ecs_subnet in eu-central-1a
-    "10.0.33.0/24", # private_db_subnet in eu-central-1a
+    "10.0.33.0/24", # private_cache_subnet in eu-central-1a
     "10.0.64.0/24", # private_ecs_subnet in eu-central-1b
-    "10.0.65.0/24"  # private_db_subnet in eu-central-1b
+    "10.0.65.0/24"  # private_cache_subnet in eu-central-1b
   ]
 }
 
 variable "private_subnet_names" {
   type    = list(string)
-  default = ["private_ecs_subnet", "private_db_subnet"]
+  default = ["private_ecs_subnet", "private_cache_subnet"]
 }
 
 variable "azs" {
@@ -55,25 +55,14 @@ variable "lb_subnet_cidr" {
 }
 
 ############################## lb ##############################
-variable "load_balancer_type" {
-  type    = string
-  default = "application"
-}
-
-
-variable "alb_target_goup_port" {
+variable "lb_target_group_port" {
   type    = number
   default = 80
 }
 
-variable "alb_listner_port" {
+variable "lb_listener_port" {
   type    = number
   default = 80
-}
-
-variable "alb_listner_protocol" {
-  type    = string
-  default = "HTTP"
 }
 
 variable "health_interval" {
@@ -82,52 +71,6 @@ variable "health_interval" {
 
 variable "health_port" {
   type = number
-}
-
-############################## doc db ##############################
-variable "admin_user_name" {
-  type      = string
-  default   = "user"
-  sensitive = true
-}
-
-variable "admin_user_password" {
-  type      = string
-  default   = "user"
-  sensitive = true
-}
-
-variable "retention_period" {
-  type    = number
-  default = 1
-}
-
-variable "preferred_backup_window" {
-  type = string
-}
-
-variable "preferred_maintenance_window" {
-  type = string
-}
-
-variable "instance_class" {
-  type = string
-}
-
-variable "skip_final_snapshot" {
-  type = bool
-}
-
-variable "serveless_max_capacity" {
-  type = number
-}
-
-variable "serveless_min_capacity" {
-  type = number
-}
-
-variable "key_alias" {
-  type = string
 }
 
 ############################## ecs ##############################
@@ -168,11 +111,6 @@ variable "ecs_task_cpu" {
 variable "ecs_task_memory" {
   type        = number
   description = "ecs task cpu"
-}
-
-variable "docdb_user_password" {
-  type        = string
-  description = "password"
 }
 
 variable "test_patient_email" {
@@ -267,10 +205,6 @@ variable "rp_origin" {
   type = string
 }
 
-variable "log_driver" {
-  type = string
-}
-
 variable "cert_name" {
   type = string
 }
@@ -338,43 +272,13 @@ variable "maximum_ecpu_seconds" {
   default = 5000
 }
 
-############################## cloudfront ##############################
-variable "origin_protocol_policy" {
-  type    = string
-  default = "http"
-}
-
-variable "cache_policy_name" {
-  type    = string
-  default = "cache-policy"
-}
-
-variable "min_ttl" {
-  type = number
-}
-
-variable "max_ttl" {
-  type = number
-}
-
-variable "allowed_methods" {
-  type = list(string)
-}
-
-variable "viewer_protocol_policy" {
-  type = string
-}
-
+############################## waf ##############################
 variable "locations" {
   description = "List of countries where our app is allowed"
   type        = list(string)
 }
 
-variable "price_class" {
+############################## dynamodb ##############################
+variable "billing_mode" {
   type = string
-}
-
-variable "is_cloudfront_staging" {
-  type    = bool
-  default = true
 }

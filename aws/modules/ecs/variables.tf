@@ -66,7 +66,7 @@ variable "private_cidrs_id" {
 
 variable "security_groups" {
   type        = set(string)
-  description = "security group from alb to ecs"
+  description = "security group from lb to ecs"
 }
 
 variable "ecs_task_cpu" {
@@ -77,15 +77,6 @@ variable "ecs_task_cpu" {
 variable "ecs_task_memory" {
   type        = number
   description = "ecs task cpu"
-}
-
-variable "docdb_user_password" {
-  type        = string
-  description = "password"
-}
-
-variable "docdb_uri" {
-  type = string
 }
 
 variable "cache_endpoint" {
@@ -206,7 +197,7 @@ variable "rp_origin" {
   type = string
 }
 
-variable "cloudfront_origin" {
+variable "origin" {
   type = string
 }
 

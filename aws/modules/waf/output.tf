@@ -1,3 +1,3 @@
 output "acl_arn" {
-  value = aws_wafv2_web_acl.cloudfront_waf.arn
+  value = aws_wafv2_web_acl.api_gw_waf.arn
 }

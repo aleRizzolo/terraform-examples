@@ -1,3 +1,3 @@
-output "cloudfront_domain_name" {
-  value = module.cloudfront.cf_domain_name
+output "api_gateway_endpoint" {
+  value = module.api_gateway.api_endpoint
 }

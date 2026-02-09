@@ -25,16 +25,16 @@ variable "lb_subnet_cidr" {
 variable "private_cidrs" {
   type = list(string)
   default = [
-    "10.0.32.0/24",
-    "10.0.33.0/24",
-    "10.0.64.0/24",
-    "10.0.65.0/24"
+    "10.0.32.0/24", # private_ecs_subnet in AZ a
+    "10.0.33.0/24", # private_cache_subnet in AZ a
+    "10.0.64.0/24", # private_ecs_subnet in AZ b
+    "10.0.65.0/24"  # private_cache_subnet in AZ b
   ]
 }
 
 variable "private_subnet_names" {
   type    = list(string)
-  default = ["private1", "private2", "private3"]
+  default = ["private_ecs_subnet", "private_cache_subnet"]
 }
 
 variable "internetgw_id" {

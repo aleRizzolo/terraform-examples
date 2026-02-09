@@ -3,7 +3,12 @@ variable "app_name" {
   default = "demo"
 }
 
-variable "waf_region" {
-  type    = string
-  default = "us-east-1"
+variable "locations" {
+  description = "List of allowed country codes for geo-blocking"
+  type        = list(string)
+}
+
+variable "api_gateway_stage_arn" {
+  type        = string
+  description = "ARN of the API Gateway stage to associate the WAF with"
 }
